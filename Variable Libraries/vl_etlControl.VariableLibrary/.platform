@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "VariableLibrary",
+    "displayName": "vl_etlControl"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "230fefcc-0b12-8b0f-49e1-5b9de695e5a7"
+  }
+}

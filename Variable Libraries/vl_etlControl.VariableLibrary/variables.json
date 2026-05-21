@@ -1,0 +1,41 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/variableLibrary/definition/variables/1.0.0/schema.json",
+  "variables": [
+    {
+      "name": "etlControl_ws_id",
+      "note": "",
+      "type": "Guid",
+      "value": "58d5660e-b470-43bb-9b03-52ccccb99ce6"
+    },
+    {
+      "name": "etlControl_db_id",
+      "note": "",
+      "type": "Guid",
+      "value": "743a08b2-6167-4b20-b36e-8bc08cf73284"
+    },
+    {
+      "name": "etlControl_fabricsql_item_connection_id",
+      "note": "",
+      "type": "Guid",
+      "value": "dd364237-b208-44b7-89ca-7dac33795076"
+    },
+    {
+      "name": "etlControl_fabriclh_item_connection_id",
+      "note": "",
+      "type": "Guid",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "name": "etlControl_nb_moveinputfilestoprocessed_id",
+      "note": "",
+      "type": "Guid",
+      "value": "25b2bc21-02f5-4956-a358-3862ad8fb74b"
+    },
+    {
+      "name": "etlControl_fabricwh_item_connection_id",
+      "note": "",
+      "type": "Guid",
+      "value": "00000000-0000-0000-0000-000000000000"
+    }
+  ]
+}

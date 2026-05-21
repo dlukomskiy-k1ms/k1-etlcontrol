@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "03_pl_gold_lakehouse_task"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ffeedb93-b35e-bdf7-4225-90b070fcba50"
+  }
+}

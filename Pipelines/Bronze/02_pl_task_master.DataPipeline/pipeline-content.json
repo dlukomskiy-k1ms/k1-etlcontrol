@@ -1,0 +1,581 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "FabricSqlDatabaseSource",
+            "sqlReaderStoredProcedureName": "[bronze].[GetTaskTypesByTaskList]",
+            "storedProcedureParameters": {
+              "TaskList": {
+                "value": {
+                  "value": "@pipeline().parameters.TaskKeyList",
+                  "type": "Expression"
+                },
+                "type": "String"
+              }
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "FabricSqlDatabaseTable",
+            "schema": [],
+            "connectionSettings": {
+              "name": "3a6f82c8_36b1_46f1_81e8_acd17d78ec73",
+              "properties": {
+                "type": "FabricSqlDatabase",
+                "typeProperties": {
+                  "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                  "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                },
+                "externalReferences": {
+                  "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                },
+                "annotations": []
+              }
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Get Task Types",
+        "dependsOn": []
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "batchCount": 2,
+          "items": {
+            "value": "@activity('Get Task Types').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "Switch",
+              "typeProperties": {
+                "on": {
+                  "value": "@toLower(item().TaskType)",
+                  "type": "Expression"
+                },
+                "cases": [
+                  {
+                    "value": "databasetask",
+                    "activities": [
+                      {
+                        "type": "ExecutePipeline",
+                        "typeProperties": {
+                          "pipeline": {
+                            "referenceName": "55778d62-e137-82e8-4082-826986fa7dcb",
+                            "type": "PipelineReference"
+                          },
+                          "parameters": {
+                            "TaskKey": {
+                              "value": "@item().TaskKey",
+                              "type": "Expression"
+                            },
+                            "TaskType": "DatabaseTask",
+                            "etlLoadDateTime": {
+                              "value": "@pipeline().parameters.etlLoadDateTime",
+                              "type": "Expression"
+                            },
+                            "JobAuditKey": {
+                              "value": "@pipeline().parameters.JobAuditKey",
+                              "type": "Expression"
+                            },
+                            "TaskAuditKey": {
+                              "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
+                              "type": "Expression"
+                            }
+                          },
+                          "waitOnCompletion": true
+                        },
+                        "policy": {
+                          "secureInput": false
+                        },
+                        "name": "DatabaseTask",
+                        "dependsOn": []
+                      },
+                      {
+                        "type": "SetVariable",
+                        "typeProperties": {
+                          "variableName": "ChildPipelineTaskDebugMessage",
+                          "value": {
+                            "value": "@concat(\n  'ChildPipelineRunID: ', activity('DatabaseTask').output.pipelineRunId,\n  ' | Error: ', activity('DatabaseTask').error.message\n)",
+                            "type": "Expression"
+                          }
+                        },
+                        "policy": {
+                          "secureInput": false,
+                          "secureOutput": false
+                        },
+                        "name": "DatabaseTask Debug Message",
+                        "dependsOn": [
+                          {
+                            "activity": "DatabaseTask",
+                            "dependencyConditions": [
+                              "Failed"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Fail",
+                        "typeProperties": {
+                          "message": "Pipeline Failed. Message stored to variable.",
+                          "errorCode": "000"
+                        },
+                        "name": "DatabaseTaskMessage - Throw Failure",
+                        "dependsOn": [
+                          {
+                            "activity": "DatabaseTask Debug Message",
+                            "dependencyConditions": [
+                              "Completed"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "value": "filetask",
+                    "activities": [
+                      {
+                        "type": "ExecutePipeline",
+                        "typeProperties": {
+                          "pipeline": {
+                            "referenceName": "62f7fac8-587f-9e84-419e-bf7dbeea71b6",
+                            "type": "PipelineReference"
+                          },
+                          "parameters": {
+                            "TaskKey": {
+                              "value": "@item().TaskKey",
+                              "type": "Expression"
+                            },
+                            "TaskType": "FileTask",
+                            "etlLoadDateTime": {
+                              "value": "@pipeline().parameters.etlLoadDateTime",
+                              "type": "Expression"
+                            },
+                            "JobAuditKey": {
+                              "value": "@pipeline().parameters.JobAuditKey",
+                              "type": "Expression"
+                            },
+                            "TaskAuditKey": {
+                              "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
+                              "type": "Expression"
+                            }
+                          },
+                          "waitOnCompletion": true
+                        },
+                        "policy": {
+                          "secureInput": false
+                        },
+                        "name": "FileTask",
+                        "dependsOn": []
+                      },
+                      {
+                        "type": "SetVariable",
+                        "typeProperties": {
+                          "variableName": "ChildPipelineTaskDebugMessage",
+                          "value": {
+                            "value": "@concat(\n  'ChildPipelineRunID: ', activity('FileTask').output.pipelineRunId,\n  ' | Error: ', activity('FileTask').error.message\n)",
+                            "type": "Expression"
+                          }
+                        },
+                        "policy": {
+                          "secureInput": false,
+                          "secureOutput": false
+                        },
+                        "name": "FileTask Debug Message",
+                        "dependsOn": [
+                          {
+                            "activity": "FileTask",
+                            "dependencyConditions": [
+                              "Failed"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Fail",
+                        "typeProperties": {
+                          "message": "Pipeline Failed. Message stored to variable.",
+                          "errorCode": "000"
+                        },
+                        "name": "FileTaskMessage - Throw Failure",
+                        "dependsOn": [
+                          {
+                            "activity": "FileTask Debug Message",
+                            "dependencyConditions": [
+                              "Completed"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "value": "apitask",
+                    "activities": [
+                      {
+                        "type": "ExecutePipeline",
+                        "typeProperties": {
+                          "pipeline": {
+                            "referenceName": "5a84d313-6bce-999f-4caf-34894bef4575",
+                            "type": "PipelineReference"
+                          },
+                          "parameters": {
+                            "TaskKey": {
+                              "value": "@item().TaskKey",
+                              "type": "Expression"
+                            },
+                            "TaskType": "ApiTask",
+                            "etlLoadDateTime": {
+                              "value": "@pipeline().parameters.etlLoadDateTime",
+                              "type": "Expression"
+                            },
+                            "JobAuditKey": {
+                              "value": "@pipeline().parameters.JobAuditKey",
+                              "type": "Expression"
+                            },
+                            "TaskAuditKey": {
+                              "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
+                              "type": "Expression"
+                            }
+                          },
+                          "waitOnCompletion": true
+                        },
+                        "policy": {
+                          "secureInput": false
+                        },
+                        "name": "ApiTask",
+                        "dependsOn": []
+                      },
+                      {
+                        "type": "SetVariable",
+                        "typeProperties": {
+                          "variableName": "ChildPipelineTaskDebugMessage",
+                          "value": {
+                            "value": "@concat(\n  'ChildPipelineRunID: ', activity('ApiTask').output.pipelineRunId,\n  ' | Error: ', activity('ApiTask').error.message\n)",
+                            "type": "Expression"
+                          }
+                        },
+                        "policy": {
+                          "secureInput": false,
+                          "secureOutput": false
+                        },
+                        "name": "ApiTask Debug Message",
+                        "dependsOn": [
+                          {
+                            "activity": "ApiTask",
+                            "dependencyConditions": [
+                              "Failed"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Fail",
+                        "typeProperties": {
+                          "message": "Pipeline Failed. Message stored to variable.",
+                          "errorCode": "000"
+                        },
+                        "name": "ApiTaskMessage - Throw Failure",
+                        "dependsOn": [
+                          {
+                            "activity": "ApiTask Debug Message",
+                            "dependencyConditions": [
+                              "Completed"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "defaultActivities": [
+                  {
+                    "type": "Fail",
+                    "typeProperties": {
+                      "message": "No Matching TaskType Action Defined.",
+                      "errorCode": "000"
+                    },
+                    "name": "Fail - No Task Type",
+                    "dependsOn": []
+                  }
+                ]
+              },
+              "name": "Switch By Task Type",
+              "dependsOn": [
+                {
+                  "activity": "Validate TaskAuditKey",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Lookup",
+              "typeProperties": {
+                "source": {
+                  "type": "FabricSqlDatabaseSource",
+                  "sqlReaderStoredProcedureName": "[bronze].[TaskAuditStart]",
+                  "storedProcedureParameters": {
+                    "JobAuditKey": {
+                      "value": {
+                        "value": "@pipeline().parameters.JobAuditKey",
+                        "type": "Expression"
+                      },
+                      "type": "String"
+                    },
+                    "TaskKey": {
+                      "value": {
+                        "value": "@item().TaskKey",
+                        "type": "Expression"
+                      },
+                      "type": "Int64"
+                    },
+                    "TaskType": {
+                      "value": {
+                        "value": "@item().TaskType",
+                        "type": "Expression"
+                      },
+                      "type": "String"
+                    },
+                    "PipelineRunID": {
+                      "value": {
+                        "value": "@pipeline().RunId",
+                        "type": "Expression"
+                      },
+                      "type": "Guid"
+                    }
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00"
+                },
+                "datasetSettings": {
+                  "type": "FabricSqlDatabaseTable",
+                  "schema": [],
+                  "connectionSettings": {
+                    "name": "32638070_d9e7_4a88_8203_4bce34a7ed5f",
+                    "properties": {
+                      "type": "FabricSqlDatabase",
+                      "typeProperties": {
+                        "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                        "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                      },
+                      "externalReferences": {
+                        "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                      },
+                      "annotations": []
+                    }
+                  },
+                  "annotations": []
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Task Audit Start",
+              "dependsOn": []
+            },
+            {
+              "type": "SqlServerStoredProcedure",
+              "typeProperties": {
+                "storedProcedureName": "[bronze].[TaskAuditEnd]",
+                "storedProcedureParameters": {
+                  "TaskAuditKey": {
+                    "value": {
+                      "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
+                      "type": "Expression"
+                    },
+                    "type": "Int64"
+                  },
+                  "Status": {
+                    "value": "Succeeded",
+                    "type": "String"
+                  }
+                }
+              },
+              "connectionSettings": {
+                "name": "535a3137_044f_410b_8196_81de5e4d9b02",
+                "properties": {
+                  "type": "FabricSqlDatabase",
+                  "typeProperties": {
+                    "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                    "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                  },
+                  "externalReferences": {
+                    "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                  },
+                  "annotations": []
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Task Audit Success",
+              "dependsOn": [
+                {
+                  "activity": "Switch By Task Type",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "IfCondition",
+              "typeProperties": {
+                "expression": {
+                  "value": "@or(\n    equals(activity('Task Audit Start').output.firstRow.TaskAuditKey,''),\n    equals(activity('Task Audit Start').output.firstRow.TaskAuditKey,0)\n)",
+                  "type": "Expression"
+                },
+                "ifTrueActivities": [
+                  {
+                    "type": "Fail",
+                    "typeProperties": {
+                      "message": "Failed to validate TaskAuditkey",
+                      "errorCode": "000"
+                    },
+                    "name": "Throw Failure - No TaskAuditKey",
+                    "dependsOn": []
+                  }
+                ],
+                "ifFalseActivities": []
+              },
+              "name": "Validate TaskAuditKey",
+              "dependsOn": [
+                {
+                  "activity": "Task Audit Start",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "SqlServerStoredProcedure",
+              "typeProperties": {
+                "storedProcedureName": "[bronze].[TaskAuditEnd]",
+                "storedProcedureParameters": {
+                  "TaskAuditKey": {
+                    "value": {
+                      "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
+                      "type": "Expression"
+                    },
+                    "type": "Int64"
+                  },
+                  "Status": {
+                    "value": "Failed",
+                    "type": "String"
+                  },
+                  "DebugString": {
+                    "value": {
+                      "value": "@variables('ChildPipelineTaskDebugMessage')",
+                      "type": "Expression"
+                    },
+                    "type": "String"
+                  }
+                }
+              },
+              "connectionSettings": {
+                "name": "535a3137_044f_410b_8196_81de5e4d9b02",
+                "properties": {
+                  "type": "FabricSqlDatabase",
+                  "typeProperties": {
+                    "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                    "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                  },
+                  "externalReferences": {
+                    "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                  },
+                  "annotations": []
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Task Audit Fail",
+              "dependsOn": [
+                {
+                  "activity": "Switch By Task Type",
+                  "dependencyConditions": [
+                    "Failed"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "name": "ForEach Task",
+        "dependsOn": [
+          {
+            "activity": "Get Task Types",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "JobName": {
+        "type": "string"
+      },
+      "etlLoadDateTime": {
+        "type": "string"
+      },
+      "TaskKeyList": {
+        "type": "string"
+      },
+      "JobAuditKey": {
+        "type": "string"
+      }
+    },
+    "libraryVariables": {
+      "vl_etlControl_etlControl_ws_id": {
+        "type": "String",
+        "variableName": "etlControl_ws_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_db_id": {
+        "type": "String",
+        "variableName": "etlControl_db_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_fabricsql_item_connection_id": {
+        "type": "String",
+        "variableName": "etlControl_fabricsql_item_connection_id",
+        "libraryName": "vl_etlControl"
+      }
+    },
+    "variables": {
+      "ChildPipelineTaskDebugMessage": {
+        "type": "String"
+      }
+    }
+  }
+}

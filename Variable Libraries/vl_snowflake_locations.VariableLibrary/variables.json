@@ -1,0 +1,131 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/variableLibrary/definition/variables/1.0.0/schema.json",
+  "variables": [
+    {
+      "name": "keyvault_url",
+      "note": "",
+      "type": "String",
+      "value": "https://data-lake-key-vault-k1ms.vault.azure.net/"
+    },
+    {
+      "name": "keyvault_vip_url",
+      "note": "",
+      "type": "String",
+      "value": "vip-sf-url"
+    },
+    {
+      "name": "keyvault_vip_warehouse",
+      "note": "",
+      "type": "String",
+      "value": "vip-sf-warehouse"
+    },
+    {
+      "name": "keyvault_sbg_username",
+      "note": "",
+      "type": "String",
+      "value": "sbg-sf-username"
+    },
+    {
+      "name": "keyvault_sbg_password",
+      "note": "",
+      "type": "String",
+      "value": "sbg-sf-password"
+    },
+    {
+      "name": "keyvault_encompass_url",
+      "note": "",
+      "type": "String",
+      "value": "encompass-sf-url"
+    },
+    {
+      "name": "keyvault_encompass_warehouse",
+      "note": "",
+      "type": "String",
+      "value": "encompass-sf-warehouse"
+    },
+    {
+      "name": "keyvault_caffey_username",
+      "note": "",
+      "type": "String",
+      "value": "caffey-sf-username"
+    },
+    {
+      "name": "keyvault_caffey_password",
+      "note": "",
+      "type": "String",
+      "value": "caffey-sf-password"
+    },
+    {
+      "name": "keyvault_hdc_username",
+      "note": "",
+      "type": "String",
+      "value": "hdc-sf-username"
+    },
+    {
+      "name": "keyvault_hdc_password",
+      "note": "",
+      "type": "String",
+      "value": "hdc-sf-password"
+    },
+    {
+      "name": "keyvault_keg1o_username",
+      "note": "",
+      "type": "String",
+      "value": "keg1o-sf-username"
+    },
+    {
+      "name": "keyvault_keg1o_password",
+      "note": "",
+      "type": "String",
+      "value": "keg1o-sf-password"
+    },
+    {
+      "name": "keyvault_keg1co_username",
+      "note": "",
+      "type": "String",
+      "value": "keg1co-sf-username"
+    },
+    {
+      "name": "keyvault_keg1co_password",
+      "note": "",
+      "type": "String",
+      "value": "keg1co-sf-password"
+    },
+    {
+      "name": "keyvault_keg1rc_username",
+      "note": "",
+      "type": "String",
+      "value": "keg1rc-sf-username"
+    },
+    {
+      "name": "keyvault_keg1rc_password",
+      "note": "",
+      "type": "String",
+      "value": "keg1rc-sf-password"
+    },
+    {
+      "name": "keyvault_keg1mo_username",
+      "note": "",
+      "type": "String",
+      "value": "keg1mo-sf-username"
+    },
+    {
+      "name": "keyvault_keg1mo_password",
+      "note": "",
+      "type": "String",
+      "value": "keg1mo-sf-password"
+    },
+    {
+      "name": "keyvault_keg1ia_username",
+      "note": "",
+      "type": "String",
+      "value": "keg1ia-sf-username"
+    },
+    {
+      "name": "keyvault_keg1ia_password",
+      "note": "",
+      "type": "String",
+      "value": "keg1ia-sf-password"
+    }
+  ]
+}

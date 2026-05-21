@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "02_pl_gold_task_master"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "27192a97-bde2-b86a-49a0-90683727a7d9"
+  }
+}

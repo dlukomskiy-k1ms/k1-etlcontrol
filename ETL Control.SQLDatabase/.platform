@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SQLDatabase",
+    "displayName": "ETL Control",
+    "description": "SQL database created and owned by service principal"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "8cf73284-8bc0-b36e-4b20-6167743a08b2"
+  }
+}

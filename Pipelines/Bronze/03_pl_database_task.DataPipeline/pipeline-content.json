@@ -1,0 +1,376 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "FabricSqlDatabaseSource",
+            "sqlReaderQuery": {
+              "value": "@concat('SELECT TaskKey, SourceName, SourceType, TaskType FROM bronze.Task WHERE TaskKey = ', string(pipeline().parameters.TaskKey))",
+              "type": "Expression"
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "FabricSqlDatabaseTable",
+            "schema": [],
+            "connectionSettings": {
+              "name": "aecfdcbb_977c_4d90_b0ab_73a2e8ca5fbc",
+              "properties": {
+                "type": "FabricSqlDatabase",
+                "typeProperties": {
+                  "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                  "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                },
+                "externalReferences": {
+                  "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                },
+                "annotations": []
+              }
+            },
+            "annotations": []
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Get Database Source Type",
+        "dependsOn": []
+      },
+      {
+        "type": "Switch",
+        "typeProperties": {
+          "on": {
+            "value": "@toLower(activity('Get Database Source Type').output.firstRow.SourceType)",
+            "type": "Expression"
+          },
+          "cases": [
+            {
+              "value": "sqlserver",
+              "activities": [
+                {
+                  "type": "ExecutePipeline",
+                  "typeProperties": {
+                    "pipeline": {
+                      "referenceName": "ce56d14e-980d-afc9-40a8-e993bf2bea76",
+                      "type": "PipelineReference"
+                    },
+                    "parameters": {
+                      "TaskKey": {
+                        "value": "@pipeline().parameters.TaskKey",
+                        "type": "Expression"
+                      },
+                      "TaskType": {
+                        "value": "@pipeline().parameters.TaskType",
+                        "type": "Expression"
+                      },
+                      "etlLoadDateTime": {
+                        "value": "@pipeline().parameters.etlLoadDateTime",
+                        "type": "Expression"
+                      },
+                      "JobAuditKey": {
+                        "value": "@pipeline().parameters.JobAuditKey",
+                        "type": "Expression"
+                      },
+                      "TaskAuditKey": {
+                        "value": "@pipeline().parameters.TaskAuditKey",
+                        "type": "Expression"
+                      }
+                    },
+                    "waitOnCompletion": true
+                  },
+                  "policy": {
+                    "secureInput": false
+                  },
+                  "name": "pl_database_sql",
+                  "dependsOn": []
+                },
+                {
+                  "type": "SqlServerStoredProcedure",
+                  "typeProperties": {
+                    "storedProcedureName": "[bronze].[TaskAuditExecutionUpdate]",
+                    "storedProcedureParameters": {
+                      "TaskAuditKey": {
+                        "value": {
+                          "value": "@pipeline().parameters.TaskAuditKey",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsRead": {
+                        "value": {
+                          "value": "@activity('pl_database_sql').output.pipelineReturnValue.RowsRead",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsCopied": {
+                        "value": {
+                          "value": "@activity('pl_database_sql').output.pipelineReturnValue.RowsCopied",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsSkipped": {
+                        "value": {
+                          "value": "@activity('pl_database_sql').output.pipelineReturnValue.RowsSkipped",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsInserted": {
+                        "value": {
+                          "value": "@activity('pl_database_sql').output.pipelineReturnValue.RowsInserted",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsUpdated": {
+                        "value": {
+                          "value": "@activity('pl_database_sql').output.pipelineReturnValue.RowsUpdated",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsDeleted": {
+                        "value": {
+                          "value": "@activity('pl_database_sql').output.pipelineReturnValue.RowsDeleted",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      }
+                    }
+                  },
+                  "connectionSettings": {
+                    "name": "e813c9e1_e664_4615_af45_491ecd160069",
+                    "properties": {
+                      "type": "FabricSqlDatabase",
+                      "typeProperties": {
+                        "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                        "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                      },
+                      "externalReferences": {
+                        "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                      },
+                      "annotations": []
+                    }
+                  },
+                  "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureInput": false,
+                    "secureOutput": false
+                  },
+                  "name": "Task Audit Update Execution Metrics",
+                  "dependsOn": [
+                    {
+                      "activity": "pl_database_sql",
+                      "dependencyConditions": [
+                        "Succeeded"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "value": "snowflake",
+              "activities": [
+                {
+                  "type": "ExecutePipeline",
+                  "typeProperties": {
+                    "pipeline": {
+                      "referenceName": "f3ca9cf4-dc5a-a854-4a32-71f4c1a62d53",
+                      "type": "PipelineReference"
+                    },
+                    "parameters": {
+                      "TaskKey": {
+                        "value": "@pipeline().parameters.TaskKey",
+                        "type": "Expression"
+                      },
+                      "TaskType": {
+                        "value": "@pipeline().parameters.TaskType",
+                        "type": "Expression"
+                      },
+                      "etlLoadDateTime": {
+                        "value": "@pipeline().parameters.etlLoadDateTime",
+                        "type": "Expression"
+                      },
+                      "JobAuditKey": {
+                        "value": "@pipeline().parameters.JobAuditKey",
+                        "type": "Expression"
+                      },
+                      "TaskAuditKey": {
+                        "value": "@pipeline().parameters.TaskAuditKey",
+                        "type": "Expression"
+                      }
+                    },
+                    "waitOnCompletion": true
+                  },
+                  "policy": {
+                    "secureInput": false
+                  },
+                  "name": "pl_database_snowflake",
+                  "dependsOn": []
+                },
+                {
+                  "type": "SqlServerStoredProcedure",
+                  "typeProperties": {
+                    "storedProcedureName": "[bronze].[TaskAuditExecutionUpdate]",
+                    "storedProcedureParameters": {
+                      "TaskAuditKey": {
+                        "value": {
+                          "value": "@pipeline().parameters.TaskAuditKey",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsRead": {
+                        "value": {
+                          "value": "@activity('pl_database_snowflake').output.pipelineReturnValue.RowsRead",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsCopied": {
+                        "value": {
+                          "value": "@activity('pl_database_snowflake').output.pipelineReturnValue.RowsCopied",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsSkipped": {
+                        "value": {
+                          "value": "@activity('pl_database_snowflake').output.pipelineReturnValue.RowsSkipped",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsInserted": {
+                        "value": {
+                          "value": "@activity('pl_database_snowflake').output.pipelineReturnValue.RowsInserted",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsUpdated": {
+                        "value": {
+                          "value": "@activity('pl_database_snowflake').output.pipelineReturnValue.RowsUpdated",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      },
+                      "RowsDeleted": {
+                        "value": {
+                          "value": "@activity('pl_database_snowflake').output.pipelineReturnValue.RowsDeleted",
+                          "type": "Expression"
+                        },
+                        "type": "Int64"
+                      }
+                    }
+                  },
+                  "connectionSettings": {
+                    "name": "e813c9e1_e664_4615_af45_491ecd160069",
+                    "properties": {
+                      "type": "FabricSqlDatabase",
+                      "typeProperties": {
+                        "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                        "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                      },
+                      "externalReferences": {
+                        "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                      },
+                      "annotations": []
+                    }
+                  },
+                  "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureInput": false,
+                    "secureOutput": false
+                  },
+                  "name": "Task Audit Update Execution Metrics_SnowFlake",
+                  "dependsOn": [
+                    {
+                      "activity": "pl_database_snowflake",
+                      "dependencyConditions": [
+                        "Succeeded"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "defaultActivities": [
+            {
+              "type": "Fail",
+              "typeProperties": {
+                "message": "No Database SourceType Defined.",
+                "errorCode": "000"
+              },
+              "name": "Fail",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "Switch By Database Type",
+        "dependsOn": [
+          {
+            "activity": "Get Database Source Type",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "TaskKey": {
+        "type": "string"
+      },
+      "TaskType": {
+        "type": "string"
+      },
+      "etlLoadDateTime": {
+        "type": "string"
+      },
+      "JobAuditKey": {
+        "type": "string"
+      },
+      "TaskAuditKey": {
+        "type": "string"
+      }
+    },
+    "libraryVariables": {
+      "vl_etlControl_etlControl_ws_id": {
+        "type": "String",
+        "variableName": "etlControl_ws_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_db_id": {
+        "type": "String",
+        "variableName": "etlControl_db_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_fabricsql_item_connection_id": {
+        "type": "String",
+        "variableName": "etlControl_fabricsql_item_connection_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_fabriclh_item_connection_id": {
+        "type": "String",
+        "variableName": "etlControl_fabriclh_item_connection_id",
+        "libraryName": "vl_etlControl"
+      }
+    }
+  }
+}

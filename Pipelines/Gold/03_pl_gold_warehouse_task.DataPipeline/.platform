@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "03_pl_gold_warehouse_task"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "0ce3febb-6d71-87b2-4614-5be6b2bf3fe8"
+  }
+}

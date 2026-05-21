@@ -1,0 +1,25 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "1a3a5058-98a8-a7a4-4b31-cc5865170cbe",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "SilverJobName": "General Tasks OR OR REPLACE JOB NAME HERE"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "General Tasks",
+        "description": "EX: date & entrauser",
+        "dependsOn": []
+      }
+    ]
+  }
+}

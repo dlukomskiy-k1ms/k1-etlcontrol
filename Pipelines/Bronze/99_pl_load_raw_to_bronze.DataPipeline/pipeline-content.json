@@ -1,0 +1,442 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Switch By Source",
+        "type": "Switch",
+        "dependsOn": [],
+        "typeProperties": {
+          "on": {
+            "value": "@toLower(pipeline().parameters.LoadRawToBronzeMethod)",
+            "type": "Expression"
+          },
+          "cases": [
+            {
+              "value": "notebook",
+              "activities": [
+                {
+                  "name": "LoadRawToBronze Notebook",
+                  "type": "TridentNotebook",
+                  "dependsOn": [],
+                  "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                  },
+                  "typeProperties": {
+                    "notebookId": {
+                      "value": "@pipeline().parameters.LoadRawToBronzeNotebookId",
+                      "type": "Expression"
+                    },
+                    "workspaceId": {
+                      "value": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+                      "type": "Expression"
+                    },
+                    "parameters": {
+                      "etlLoadDateTime": {
+                        "value": {
+                          "value": "@pipeline().parameters.etlLoadDateTime",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "BronzeWorkspaceName": {
+                        "value": {
+                          "value": "@pipeline().parameters.BronzeWorkspaceName",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "BronzeLakehouseName": {
+                        "value": {
+                          "value": "@pipeline().parameters.BronzeLakehouseName",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "RawStoragePath": {
+                        "value": {
+                          "value": "@pipeline().parameters.RawStoragePath",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "RawStorageFileName": {
+                        "value": {
+                          "value": "@pipeline().parameters.RawStorageFileName",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "BronzeSchemaName": {
+                        "value": {
+                          "value": "@pipeline().parameters.BronzeSchemaName",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "BronzeTableName": {
+                        "value": {
+                          "value": "@pipeline().parameters.BronzeTableName",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "BronzeLoadMethod": {
+                        "value": {
+                          "value": "@pipeline().parameters.BronzeLoadMethod",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "PrimaryKeyColumnList": {
+                        "value": {
+                          "value": "@pipeline().parameters.PrimaryKeyColumnList",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "SourceName": {
+                        "value": {
+                          "value": "@pipeline().parameters.SourceName",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "BronzeWorkspaceId": {
+                        "value": {
+                          "value": "@pipeline().parameters.BronzeWorkspaceId",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "BronzeLakehouseId": {
+                        "value": {
+                          "value": "@pipeline().parameters.BronzeLakehouseId",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "IsWatermarkEnabledFlag": {
+                        "value": {
+                          "value": "@pipeline().parameters.IsWatermarkEnabledFlag",
+                          "type": "Expression"
+                        },
+                        "type": "bool"
+                      },
+                      "SinkWatermarkColumn": {
+                        "value": {
+                          "value": "@pipeline().parameters.SinkWatermarkColumn",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "SourceType": {
+                        "value": {
+                          "value": "@pipeline().parameters.SourceType",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "ApiTaskName": {
+                        "value": {
+                          "value": "@pipeline().parameters.TaskName",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "TaskKey": {
+                        "value": {
+                          "value": "@pipeline().parameters.TaskKey",
+                          "type": "Expression"
+                        },
+                        "type": "int"
+                      },
+                      "JsonArrayName": {
+                        "value": {
+                          "value": "@pipeline().parameters.JsonArrayName",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "SortByColumnList": {
+                        "value": {
+                          "value": "@pipeline().parameters.SortByColumnList",
+                          "type": "Expression"
+                        },
+                        "type": "string"
+                      },
+                      "JobAuditKey": {
+                        "value": {
+                          "value": "@pipeline().parameters.JobAuditKey",
+                          "type": "Expression"
+                        },
+                        "type": "int"
+                      },
+                      "TaskAuditKey": {
+                        "value": {
+                          "value": "@pipeline().parameters.TaskAuditKey",
+                          "type": "Expression"
+                        },
+                        "type": "int"
+                      }
+                    },
+                    "sessionTag": {
+                      "value": "@pipeline().parameters.SourceName",
+                      "type": "Expression"
+                    }
+                  }
+                },
+                {
+                  "name": "NB_TaskExecutionUpdateStats",
+                  "type": "SetVariable",
+                  "dependsOn": [
+                    {
+                      "activity": "LoadRawToBronze Notebook",
+                      "dependencyConditions": [
+                        "Succeeded"
+                      ]
+                    }
+                  ],
+                  "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                  },
+                  "typeProperties": {
+                    "variableName": "pipelineReturnValue",
+                    "value": [
+                      {
+                        "key": "RowsRead",
+                        "value": {
+                          "type": "Expression",
+                          "content": "@json(activity('LoadRawToBronze Notebook').output.result.exitValue).RowsRead"
+                        }
+                      },
+                      {
+                        "key": "RowsCopied",
+                        "value": {
+                          "type": "Expression",
+                          "content": "@json(activity('LoadRawToBronze Notebook').output.result.exitValue).RowsCopied"
+                        }
+                      },
+                      {
+                        "key": "RowsSkipped",
+                        "value": {
+                          "type": "Expression",
+                          "content": "@json(activity('LoadRawToBronze Notebook').output.result.exitValue).RowsSkipped"
+                        }
+                      },
+                      {
+                        "key": "RowsInserted",
+                        "value": {
+                          "type": "Expression",
+                          "content": "@json(activity('LoadRawToBronze Notebook').output.result.exitValue).RowsInserted"
+                        }
+                      },
+                      {
+                        "key": "RowsUpdated",
+                        "value": {
+                          "type": "Expression",
+                          "content": "@json(activity('LoadRawToBronze Notebook').output.result.exitValue).RowsUpdated"
+                        }
+                      },
+                      {
+                        "key": "RowsDeleted",
+                        "value": {
+                          "type": "Expression",
+                          "content": "@json(activity('LoadRawToBronze Notebook').output.result.exitValue).RowsDeleted"
+                        }
+                      }
+                    ],
+                    "setSystemVariable": true
+                  }
+                }
+              ]
+            }
+          ],
+          "defaultActivities": [
+            {
+              "name": "Fail",
+              "type": "Fail",
+              "dependsOn": [],
+              "typeProperties": {
+                "message": "Invalid Source",
+                "errorCode": "000"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "MoveInputFilesToProcessed",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Switch By Source",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": {
+            "value": "@pipeline().libraryVariables.vl_etlControl_etlControl_nb_moveinputfilestoprocessed_id",
+            "type": "Expression"
+          },
+          "workspaceId": {
+            "value": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+            "type": "Expression"
+          },
+          "parameters": {
+            "BronzeWorkspaceName": {
+              "value": {
+                "value": "@pipeline().parameters.BronzeWorkspaceName",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "BronzeLakehouseName": {
+              "value": {
+                "value": "@pipeline().parameters.BronzeLakehouseName",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "BronzeWorkspaceId": {
+              "value": {
+                "value": "@pipeline().parameters.BronzeWorkspaceId",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "BronzeLakehouseId": {
+              "value": {
+                "value": "@pipeline().parameters.BronzeLakehouseId",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "RawStoragePath": {
+              "value": {
+                "value": "@pipeline().parameters.RawStoragePath",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "RawStorageFileName": {
+              "value": {
+                "value": "@pipeline().parameters.RawStorageFileName",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sessionTag": {
+            "value": "@pipeline().parameters.SourceName",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "etlLoadDateTime": {
+        "type": "string"
+      },
+      "BronzeWorkspaceName": {
+        "type": "string"
+      },
+      "BronzeLakehouseName": {
+        "type": "string"
+      },
+      "RawStoragePath": {
+        "type": "string"
+      },
+      "RawStorageFileName": {
+        "type": "string"
+      },
+      "BronzeSchemaName": {
+        "type": "string"
+      },
+      "BronzeTableName": {
+        "type": "string"
+      },
+      "BronzeLoadMethod": {
+        "type": "string"
+      },
+      "PrimaryKeyColumnList": {
+        "type": "string"
+      },
+      "SourceName": {
+        "type": "string"
+      },
+      "BronzeWorkspaceId": {
+        "type": "string"
+      },
+      "BronzeLakehouseId": {
+        "type": "string"
+      },
+      "IsWatermarkEnabledFlag": {
+        "type": "bool"
+      },
+      "SinkWatermarkColumn": {
+        "type": "string"
+      },
+      "SourceType": {
+        "type": "string"
+      },
+      "TaskName": {
+        "type": "string"
+      },
+      "TaskKey": {
+        "type": "int"
+      },
+      "JsonArrayName": {
+        "type": "string"
+      },
+      "SortByColumnList": {
+        "type": "string"
+      },
+      "JobAuditKey": {
+        "type": "string"
+      },
+      "TaskAuditKey": {
+        "type": "string"
+      },
+      "LoadRawToBronzeMethod": {
+        "type": "string"
+      },
+      "LoadRawToBronzeNotebookName": {
+        "type": "string"
+      },
+      "LoadRawToBronzeNotebookId": {
+        "type": "string"
+      }
+    },
+    "libraryVariables": {
+      "vl_etlControl_etlControl_ws_id": {
+        "type": "String",
+        "variableName": "etlControl_ws_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_nb_moveinputfilestoprocessed_id": {
+        "type": "String",
+        "variableName": "etlControl_nb_moveinputfilestoprocessed_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_nb_loadrawtobronze_entraapi_id": {
+        "type": "String",
+        "variableName": "etlControl_nb_loadrawtobronze_entraapi_id",
+        "libraryName": "vl_etlControl"
+      }
+    }
+  }
+}

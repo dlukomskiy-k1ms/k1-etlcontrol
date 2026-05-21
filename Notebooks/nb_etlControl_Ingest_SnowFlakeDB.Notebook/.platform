@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_etlControl_Ingest_SnowFlakeDB"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "6af313b9-a976-8110-4e26-77f934dde9c7"
+  }
+}

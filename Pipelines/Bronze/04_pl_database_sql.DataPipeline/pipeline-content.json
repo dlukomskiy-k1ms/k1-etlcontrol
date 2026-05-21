@@ -1,0 +1,700 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Get Database Task Info",
+        "type": "Lookup",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "FabricSqlDatabaseSource",
+            "sqlReaderStoredProcedureName": "[bronze].[GetDatabaseTaskInfo]",
+            "storedProcedureParameters": {
+              "TaskKey": {
+                "type": "Int64",
+                "value": {
+                  "value": "@pipeline().parameters.TaskKey",
+                  "type": "Expression"
+                }
+              }
+            },
+            "queryTimeout": "02:00:00",
+            "partitionOption": "None"
+          },
+          "datasetSettings": {
+            "annotations": [],
+            "connectionSettings": {
+              "name": "aecfdcbb_977c_4d90_b0ab_73a2e8ca5fbc",
+              "properties": {
+                "annotations": [],
+                "type": "FabricSqlDatabase",
+                "typeProperties": {
+                  "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+                  "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id"
+                },
+                "externalReferences": {
+                  "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                }
+              }
+            },
+            "type": "FabricSqlDatabaseTable",
+            "schema": [],
+            "typeProperties": {}
+          }
+        }
+      },
+      {
+        "name": "If Watermark Enabled",
+        "type": "IfCondition",
+        "dependsOn": [
+          {
+            "activity": "Get Database Task Info",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "expression": {
+            "value": "@equals(activity('Get Database Task Info').output.firstRow.IsWatermarkEnabledFlag, true)",
+            "type": "Expression"
+          },
+          "ifFalseActivities": [
+            {
+              "name": "Copy data to Bronze Lakehouse",
+              "type": "Copy",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 1,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "source": {
+                  "type": "SqlServerSource",
+                  "additionalColumns": [
+                    {
+                      "name": "etlLoadDateTime",
+                      "value": {
+                        "value": "@pipeline().parameters.etlLoadDateTime",
+                        "type": "Expression"
+                      }
+                    },
+                    {
+                      "name": "TaskKey",
+                      "value": {
+                        "value": "@pipeline().parameters.TaskKey",
+                        "type": "Expression"
+                      }
+                    },
+                    {
+                      "name": "JobAuditKey",
+                      "value": {
+                        "value": "@pipeline().parameters.JobAuditKey",
+                        "type": "Expression"
+                      }
+                    },
+                    {
+                      "name": "TaskAuditKey",
+                      "value": {
+                        "value": "@pipeline().parameters.TaskAuditKey",
+                        "type": "Expression"
+                      }
+                    }
+                  ],
+                  "queryTimeout": "02:00:00",
+                  "isolationLevel": "ReadUncommitted",
+                  "partitionOption": "None",
+                  "datasetSettings": {
+                    "annotations": [],
+                    "type": "SqlServerTable",
+                    "schema": [],
+                    "typeProperties": {
+                      "schema": {
+                        "value": "@activity('Get Database Task Info').output.firstRow.SourceSchemaName",
+                        "type": "Expression"
+                      },
+                      "table": {
+                        "value": "@activity('Get Database Task Info').output.firstRow.SourceTableName",
+                        "type": "Expression"
+                      }
+                    },
+                    "externalReferences": {
+                      "connection": "@activity('Get Database Task Info').output.firstRow.SourceFabricConnectionId"
+                    }
+                  }
+                },
+                "sink": {
+                  "type": "LakehouseTableSink",
+                  "tableActionOption": "OverwriteSchema",
+                  "partitionOption": "None",
+                  "applyVOrder": false,
+                  "datasetSettings": {
+                    "annotations": [],
+                    "connectionSettings": {
+                      "name": "3f0fba85_a91b_45da_9990_9177ff954cc8",
+                      "properties": {
+                        "annotations": [],
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "workspaceId": "@activity('Get Database Task Info').output.firstRow.BronzeWorkspaceId",
+                          "artifactId": "@activity('Get Database Task Info').output.firstRow.BronzeLakehouseId",
+                          "rootFolder": "Tables"
+                        },
+                        "externalReferences": {
+                          "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabriclh_item_connection_id"
+                        }
+                      }
+                    },
+                    "type": "LakehouseTable",
+                    "schema": [],
+                    "typeProperties": {
+                      "schema": {
+                        "value": "@activity('Get Database Task Info').output.firstRow.BronzeSchemaName",
+                        "type": "Expression"
+                      },
+                      "table": {
+                        "value": "@activity('Get Database Task Info').output.firstRow.BronzeTableName",
+                        "type": "Expression"
+                      }
+                    }
+                  }
+                },
+                "enableStaging": false,
+                "translator": {
+                  "type": "TabularTranslator",
+                  "typeConversion": true,
+                  "typeConversionSettings": {
+                    "allowDataTruncation": false,
+                    "treatBooleanAsNumber": false
+                  }
+                }
+              }
+            },
+            {
+              "name": "TaskExecutionUpdateStats",
+              "type": "SetVariable",
+              "dependsOn": [
+                {
+                  "activity": "Copy data to Bronze Lakehouse",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "variableName": "pipelineReturnValue",
+                "value": [
+                  {
+                    "key": "RowsRead",
+                    "value": {
+                      "type": "Expression",
+                      "content": "@activity('Copy data to Bronze Lakehouse').output.rowsRead"
+                    }
+                  },
+                  {
+                    "key": "RowsCopied",
+                    "value": {
+                      "type": "Expression",
+                      "content": "@activity('Copy data to Bronze Lakehouse').output.rowsCopied"
+                    }
+                  },
+                  {
+                    "key": "RowsSkipped",
+                    "value": {
+                      "type": "Expression",
+                      "content": "@activity('Copy data to Bronze Lakehouse').output.rowsSkipped"
+                    }
+                  },
+                  {
+                    "key": "RowsInserted",
+                    "value": {
+                      "type": "Null",
+                      "content": 0
+                    }
+                  },
+                  {
+                    "key": "RowsUpdated",
+                    "value": {
+                      "type": "Null",
+                      "content": 0
+                    }
+                  },
+                  {
+                    "key": "RowsDeleted",
+                    "value": {
+                      "type": "Null",
+                      "content": 0
+                    }
+                  }
+                ],
+                "setSystemVariable": true
+              }
+            }
+          ],
+          "ifTrueActivities": [
+            {
+              "name": "Copy data to Bronze Lakehouse_WM",
+              "type": "Copy",
+              "dependsOn": [
+                {
+                  "activity": "Lookup Watermark Query",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                },
+                {
+                  "activity": "Lookup New High WM Value From Source",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "source": {
+                  "type": "SqlServerSource",
+                  "additionalColumns": [
+                    {
+                      "name": "etlLoadDateTime",
+                      "value": {
+                        "value": "@pipeline().parameters.etlLoadDateTime",
+                        "type": "Expression"
+                      }
+                    },
+                    {
+                      "name": "TaskKey",
+                      "value": {
+                        "value": "@pipeline().parameters.TaskKey",
+                        "type": "Expression"
+                      }
+                    },
+                    {
+                      "name": "JobAuditKey",
+                      "value": {
+                        "value": "@pipeline().parameters.JobAuditKey",
+                        "type": "Expression"
+                      }
+                    },
+                    {
+                      "name": "TaskAuditKey",
+                      "value": {
+                        "value": "@pipeline().parameters.TaskAuditKey",
+                        "type": "Expression"
+                      }
+                    }
+                  ],
+                  "sqlReaderQuery": {
+                    "value": "@activity('Lookup Watermark Query').output.firstRow.SourceQuery",
+                    "type": "Expression"
+                  },
+                  "queryTimeout": "02:00:00",
+                  "partitionOption": "None",
+                  "datasetSettings": {
+                    "annotations": [],
+                    "type": "SqlServerTable",
+                    "schema": [],
+                    "typeProperties": {
+                      "schema": {
+                        "value": "@activity('Get Database Task Info').output.firstRow.SourceSchemaName",
+                        "type": "Expression"
+                      },
+                      "table": {
+                        "value": "@activity('Get Database Task Info').output.firstRow.SourceTableName",
+                        "type": "Expression"
+                      }
+                    },
+                    "externalReferences": {
+                      "connection": "@activity('Get Database Task Info').output.firstRow.SourceFabricConnectionId"
+                    }
+                  }
+                },
+                "sink": {
+                  "type": "LakehouseTableSink",
+                  "tableActionOption": "Upsert",
+                  "upsertSettings": {
+                    "keys": {
+                      "value": "@if(\n    contains(activity('Get Database Task Info').output.firstRow.PrimaryKeyColumnList, ','),\n    split(activity('Get Database Task Info').output.firstRow.PrimaryKeyColumnList, ','),\n    createArray(activity('Get Database Task Info').output.firstRow.PrimaryKeyColumnList)\n)",
+                      "type": "Expression"
+                    }
+                  },
+                  "applyVOrder": false,
+                  "datasetSettings": {
+                    "annotations": [],
+                    "connectionSettings": {
+                      "name": "4a774dbb_b87d_4403_9516_662bd30e7698",
+                      "properties": {
+                        "annotations": [],
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "workspaceId": "@activity('Get Database Task Info').output.firstRow.BronzeWorkspaceId",
+                          "artifactId": "@activity('Get Database Task Info').output.firstRow.BronzeLakehouseId",
+                          "rootFolder": "Tables"
+                        },
+                        "externalReferences": {
+                          "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabriclh_item_connection_id"
+                        }
+                      }
+                    },
+                    "type": "LakehouseTable",
+                    "schema": [],
+                    "typeProperties": {
+                      "schema": {
+                        "value": "@activity('Get Database Task Info').output.firstRow.BronzeSchemaName",
+                        "type": "Expression"
+                      },
+                      "table": {
+                        "value": "@activity('Get Database Task Info').output.firstRow.BronzeTableName",
+                        "type": "Expression"
+                      }
+                    }
+                  }
+                },
+                "enableStaging": false,
+                "translator": {
+                  "type": "TabularTranslator",
+                  "typeConversion": true,
+                  "typeConversionSettings": {
+                    "allowDataTruncation": false,
+                    "treatBooleanAsNumber": false
+                  }
+                }
+              }
+            },
+            {
+              "name": "Lookup Watermark Query",
+              "type": "Lookup",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "source": {
+                  "type": "FabricSqlDatabaseSource",
+                  "sqlReaderStoredProcedureName": "[bronze].[GetDatabaseTaskQuery]",
+                  "storedProcedureParameters": {
+                    "TaskKey": {
+                      "type": "Int64",
+                      "value": {
+                        "value": "@pipeline().parameters.TaskKey",
+                        "type": "Expression"
+                      }
+                    }
+                  },
+                  "queryTimeout": "02:00:00",
+                  "partitionOption": "None"
+                },
+                "datasetSettings": {
+                  "annotations": [],
+                  "connectionSettings": {
+                    "name": "74e272af_ed76_4b24_a45b_a8f055929fba",
+                    "properties": {
+                      "annotations": [],
+                      "type": "FabricSqlDatabase",
+                      "typeProperties": {
+                        "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+                        "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id"
+                      },
+                      "externalReferences": {
+                        "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                      }
+                    }
+                  },
+                  "type": "FabricSqlDatabaseTable",
+                  "schema": [],
+                  "typeProperties": {}
+                }
+              }
+            },
+            {
+              "name": "Update Watermark Value",
+              "type": "SqlServerStoredProcedure",
+              "dependsOn": [
+                {
+                  "activity": "TaskExecutionUpdateStats_WM",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 3,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "storedProcedureName": "[bronze].[UpdateWatermarkValue]",
+                "storedProcedureParameters": {
+                  "IsWatermarkEnabledFlag": {
+                    "value": {
+                      "value": "@activity('Get Database Task Info').output.firstRow.IsWatermarkEnabledFlag",
+                      "type": "Expression"
+                    },
+                    "type": "Boolean"
+                  },
+                  "NewHighWatermarkValue": {
+                    "value": {
+                      "value": "@activity('Lookup New High WM Value From Source').output.firstRow.NewHighWatermarkValue",
+                      "type": "Expression"
+                    },
+                    "type": "String"
+                  },
+                  "TaskKey": {
+                    "value": {
+                      "value": "@pipeline().parameters.TaskKey",
+                      "type": "Expression"
+                    },
+                    "type": "Int32"
+                  }
+                }
+              },
+              "connectionSettings": {
+                "name": "6995776f_e602_4a5d_b2f6_f2a8c756f758",
+                "properties": {
+                  "annotations": [],
+                  "type": "FabricSqlDatabase",
+                  "typeProperties": {
+                    "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+                    "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id"
+                  },
+                  "externalReferences": {
+                    "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                  }
+                }
+              }
+            },
+            {
+              "name": "Lookup High WM Value",
+              "type": "Lookup",
+              "state": "Inactive",
+              "onInactiveMarkAs": "Succeeded",
+              "dependsOn": [
+                {
+                  "activity": "Wait 30sec",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "source": {
+                  "type": "LakehouseTableSource",
+                  "sqlReaderQuery": {
+                    "value": "@if(\n    equals(activity('Get Database Task Info').output.firstRow.IsWatermarkRowVersionType, true),\n    concat(\n        'SELECT CONVERT(VARCHAR(18), MAX(',\n        activity('Get Database Task Info').output.firstRow.WatermarkColumn,\n        '), 1) AS HighWatermarkValue FROM ',\n        if(\n            equals(coalesce(activity('Get Database Task Info').output.firstRow.BronzeSchemaName, ''), ''),\n            '',\n            concat(activity('Get Database Task Info').output.firstRow.BronzeSchemaName, '.')\n        ),\n        activity('Get Database Task Info').output.firstRow.BronzeTableName\n    ),\n    concat(\n        'SELECT CAST(MAX(',\n        activity('Get Database Task Info').output.firstRow.WatermarkColumn,\n        ') AS DATETIME2) AS HighWatermarkValue FROM ',\n        if(\n            equals(coalesce(activity('Get Database Task Info').output.firstRow.BronzeSchemaName, ''), ''),\n            '',\n            concat(activity('Get Database Task Info').output.firstRow.BronzeSchemaName, '.')\n        ),\n        activity('Get Database Task Info').output.firstRow.BronzeTableName\n    )\n)",
+                    "type": "Expression"
+                  },
+                  "partitionOption": "None"
+                },
+                "datasetSettings": {
+                  "annotations": [],
+                  "connectionSettings": {
+                    "name": "fae6400d_d7b5_4a74_ba70_94700a762a90",
+                    "properties": {
+                      "annotations": [],
+                      "type": "Lakehouse",
+                      "typeProperties": {
+                        "workspaceId": "@activity('Get Database Task Info').output.firstRow.BronzeWorkspaceId",
+                        "artifactId": "@activity('Get Database Task Info').output.firstRow.BronzeLakehouseId",
+                        "rootFolder": "Tables"
+                      },
+                      "externalReferences": {
+                        "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabriclh_item_connection_id"
+                      }
+                    }
+                  },
+                  "type": "LakehouseTable",
+                  "schema": [],
+                  "typeProperties": {}
+                }
+              }
+            },
+            {
+              "name": "Wait 30sec",
+              "type": "Wait",
+              "state": "Inactive",
+              "onInactiveMarkAs": "Succeeded",
+              "dependsOn": [
+                {
+                  "activity": "Copy data to Bronze Lakehouse_WM",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "typeProperties": {
+                "waitTimeInSeconds": 30
+              }
+            },
+            {
+              "name": "Lookup New High WM Value From Source",
+              "type": "Lookup",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "source": {
+                  "type": "SqlServerSource",
+                  "sqlReaderQuery": {
+                    "value": "@concat('SELECT MAX(', activity('Get Database Task Info').output.firstRow.WatermarkColumn, ') AS NewHighWatermarkValue FROM ', activity('Get Database Task Info').output.firstRow.SourceSchemaName, '.', activity('Get Database Task Info').output.firstRow.SourceTableName)",
+                    "type": "Expression"
+                  },
+                  "queryTimeout": "02:00:00",
+                  "partitionOption": "None"
+                },
+                "datasetSettings": {
+                  "annotations": [],
+                  "type": "SqlServerTable",
+                  "schema": [],
+                  "typeProperties": {},
+                  "externalReferences": {
+                    "connection": "@activity('Get Database Task Info').output.firstRow.SourceFabricConnectionId"
+                  }
+                }
+              }
+            },
+            {
+              "name": "TaskExecutionUpdateStats_WM",
+              "type": "SetVariable",
+              "dependsOn": [
+                {
+                  "activity": "Copy data to Bronze Lakehouse_WM",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "variableName": "pipelineReturnValue",
+                "value": [
+                  {
+                    "key": "RowsRead",
+                    "value": {
+                      "type": "Expression",
+                      "content": "@activity('Copy data to Bronze Lakehouse_WM').output.rowsRead"
+                    }
+                  },
+                  {
+                    "key": "RowsCopied",
+                    "value": {
+                      "type": "Expression",
+                      "content": "@activity('Copy data to Bronze Lakehouse_WM').output.rowsCopied"
+                    }
+                  },
+                  {
+                    "key": "RowsSkipped",
+                    "value": {
+                      "type": "Expression",
+                      "content": "@activity('Copy data to Bronze Lakehouse_WM').output.rowsSkipped"
+                    }
+                  },
+                  {
+                    "key": "RowsInserted",
+                    "value": {
+                      "type": "Null",
+                      "content": 0
+                    }
+                  },
+                  {
+                    "key": "RowsUpdated",
+                    "value": {
+                      "type": "Null",
+                      "content": 0
+                    }
+                  },
+                  {
+                    "key": "RowsDeleted",
+                    "value": {
+                      "type": "Null",
+                      "content": 0
+                    }
+                  }
+                ],
+                "setSystemVariable": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "parameters": {
+      "TaskKey": {
+        "type": "string"
+      },
+      "TaskType": {
+        "type": "string"
+      },
+      "etlLoadDateTime": {
+        "type": "string"
+      },
+      "JobAuditKey": {
+        "type": "string"
+      },
+      "TaskAuditKey": {
+        "type": "string"
+      }
+    },
+    "libraryVariables": {
+      "vl_etlControl_etlControl_ws_id": {
+        "type": "String",
+        "variableName": "etlControl_ws_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_db_id": {
+        "type": "String",
+        "variableName": "etlControl_db_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_fabricsql_item_connection_id": {
+        "type": "String",
+        "variableName": "etlControl_fabricsql_item_connection_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_fabriclh_item_connection_id": {
+        "type": "String",
+        "variableName": "etlControl_fabriclh_item_connection_id",
+        "libraryName": "vl_etlControl"
+      }
+    }
+  }
+}

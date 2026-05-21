@@ -1,0 +1,196 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "d53c627d-9c1d-4bdb-b4b9-519c03f20c81",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": "Ingest SBG VIP"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Ingest SBG VIP",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": []
+      },
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "d53c627d-9c1d-4bdb-b4b9-519c03f20c81",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": "Ingest CAFFEY Encompass"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Ingest CAFFEY Encompass",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": []
+      },
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "519f3c20-f39b-90ec-4d7d-c06712685867",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": "Ingest HDC VIP"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Ingest HDC VIP",
+        "dependsOn": [
+          {
+            "activity": "Ingest SBG VIP",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "519f3c20-f39b-90ec-4d7d-c06712685867",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": "Ingest KEG1O Encompass"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Ingest KEG1O Encompass",
+        "dependsOn": [
+          {
+            "activity": "Ingest CAFFEY Encompass",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "519f3c20-f39b-90ec-4d7d-c06712685867",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": "Ingest KEG1RC VIP"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Ingest KEG1RC VIP",
+        "dependsOn": [
+          {
+            "activity": "Ingest HDC VIP",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "519f3c20-f39b-90ec-4d7d-c06712685867",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": "Ingest KEG1IA Encompass"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Ingest KEG1IA Encompass",
+        "dependsOn": [
+          {
+            "activity": "Ingest KEG1CO Encompass",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "519f3c20-f39b-90ec-4d7d-c06712685867",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": "Ingest KEG1CO Encompass"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Ingest KEG1CO Encompass",
+        "dependsOn": [
+          {
+            "activity": "Ingest KEG1O Encompass",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "519f3c20-f39b-90ec-4d7d-c06712685867",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": "Ingest KEG1MO VIP"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Ingest KEG1MO VIP",
+        "dependsOn": [
+          {
+            "activity": "Ingest KEG1RC VIP",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+select * from silver.Job;
+insert into silver.Job VALUES ('Silver Layer Tables - D1', 'Execute Level 1 stored procs for silver layer tables',1)
+--insert into silver.Job VALUES ('Silver Layer Tables - D2', 'Execute Level 2 stored procs for silver layer tables',1)
+--insert into silver.Job VALUES ('Silver Layer Tables - D3', 'Execute Level 3 stored procs for silver layer tables',1)
+
+select * from silver.Task;
+insert into silver.Task VALUES (1,'item',1,'WarehouseTask','K1msDataWarehouse','b628cee2-ac47-4bf1-bda5-4740921fa233','czyylvzmcldejanvn2ylr4qawu-hyovcnoibktehgphqpdaoho7oa.datawarehouse.fabric.microsoft.com','Silver','usp_Load_Silver_Item',NULL,'K1MS - [1 Dev] Data Hub','35511d3e-0ac8-43a6-99e7-83c6071ddf70',0,NULL);
+insert into silver.Task VALUES (1,'account',1,'WarehouseTask','K1msDataWarehouse','b628cee2-ac47-4bf1-bda5-4740921fa233','czyylvzmcldejanvn2ylr4qawu-hyovcnoibktehgphqpdaoho7oa.datawarehouse.fabric.microsoft.com','Silver','usp_Load_Silver_Account',NULL,'K1MS - [1 Dev] Data Hub','35511d3e-0ac8-43a6-99e7-83c6071ddf70',0,NULL);
+insert into silver.Task VALUES (1,'budget',1,'WarehouseTask','K1msDataWarehouse','b628cee2-ac47-4bf1-bda5-4740921fa233','czyylvzmcldejanvn2ylr4qawu-hyovcnoibktehgphqpdaoho7oa.datawarehouse.fabric.microsoft.com','Silver','usp_Load_Silver_Budget',NULL,'K1MS - [1 Dev] Data Hub','35511d3e-0ac8-43a6-99e7-83c6071ddf70',0,NULL);
+insert into silver.Task VALUES (1,'inventory_on_hand',1,'WarehouseTask','K1msDataWarehouse','b628cee2-ac47-4bf1-bda5-4740921fa233','czyylvzmcldejanvn2ylr4qawu-hyovcnoibktehgphqpdaoho7oa.datawarehouse.fabric.microsoft.com','Silver','usp_Load_Silver_Inventory_on_Hand',NULL,'K1MS - [1 Dev] Data Hub','35511d3e-0ac8-43a6-99e7-83c6071ddf70',0,NULL);
+insert into silver.Task VALUES (1,'invoice',1,'WarehouseTask','K1msDataWarehouse','b628cee2-ac47-4bf1-bda5-4740921fa233','czyylvzmcldejanvn2ylr4qawu-hyovcnoibktehgphqpdaoho7oa.datawarehouse.fabric.microsoft.com','Silver','usp_Load_Silver_Invoice',NULL,'K1MS - [1 Dev] Data Hub','35511d3e-0ac8-43a6-99e7-83c6071ddf70',0,NULL);
+insert into silver.Task VALUES (1,'order',1,'WarehouseTask','K1msDataWarehouse','b628cee2-ac47-4bf1-bda5-4740921fa233','czyylvzmcldejanvn2ylr4qawu-hyovcnoibktehgphqpdaoho7oa.datawarehouse.fabric.microsoft.com','Silver','usp_Load_Silver_Order',NULL,'K1MS - [1 Dev] Data Hub','35511d3e-0ac8-43a6-99e7-83c6071ddf70',0,NULL);

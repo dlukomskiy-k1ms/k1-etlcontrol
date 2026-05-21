@@ -1,0 +1,437 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "SetVariable",
+        "typeProperties": {
+          "variableName": "etlLoadDateTime",
+          "value": {
+            "value": "@formatDateTime(utcNow(), 'yyyyMMdd''T''HHmmss''Z''')",
+            "type": "Expression"
+          }
+        },
+        "policy": {
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Set etlLoadDateTime",
+        "dependsOn": []
+      },
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "8ef98cfe-9794-86e4-47f1-8258e2264e19",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "JobName": {
+              "value": "@pipeline().parameters.JobName",
+              "type": "Expression"
+            },
+            "etlLoadDateTime": {
+              "value": "@variables('etlLoadDateTime')",
+              "type": "Expression"
+            },
+            "TaskKeyList": {
+              "value": "@variables('TaskKeyList')",
+              "type": "Expression"
+            },
+            "JobAuditKey": {
+              "value": "@variables('JobAuditKey')",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "Run Task Master",
+        "dependsOn": [
+          {
+            "activity": "If JobName VS Manual TaskKeyList",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Fail",
+        "typeProperties": {
+          "message": "Job failed due to one or more Tasks failing.",
+          "errorCode": "000"
+        },
+        "name": "ThrowFailure",
+        "dependsOn": [
+          {
+            "activity": "Job Audit Fail",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "IfCondition",
+        "typeProperties": {
+          "expression": {
+            "value": "@and(\n  not(equals(pipeline().parameters.JobName, '')),\n  empty(pipeline().parameters.TaskKeyList)\n)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "type": "Lookup",
+              "typeProperties": {
+                "source": {
+                  "type": "FabricSqlDatabaseSource",
+                  "sqlReaderStoredProcedureName": "[bronze].[GetJobTasks]",
+                  "storedProcedureParameters": {
+                    "JobName": {
+                      "value": {
+                        "value": "@pipeline().parameters.JobName",
+                        "type": "Expression"
+                      },
+                      "type": "String"
+                    }
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00"
+                },
+                "datasetSettings": {
+                  "type": "FabricSqlDatabaseTable",
+                  "schema": [],
+                  "connectionSettings": {
+                    "name": "33fb4945_8629_4f56_9337_b4cdd3f545b3",
+                    "properties": {
+                      "type": "FabricSqlDatabase",
+                      "typeProperties": {
+                        "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                        "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                      },
+                      "externalReferences": {
+                        "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                      },
+                      "annotations": []
+                    }
+                  },
+                  "annotations": []
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Get Job Tasks",
+              "dependsOn": []
+            },
+            {
+              "type": "SetVariable",
+              "typeProperties": {
+                "variableName": "TaskKeyList",
+                "value": {
+                  "value": "@activity('Get Job Tasks').output.firstRow.TaskKeys",
+                  "type": "Expression"
+                }
+              },
+              "policy": {
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Get TaskKeyList From JobName",
+              "dependsOn": [
+                {
+                  "activity": "Get Job Tasks",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            }
+          ],
+          "ifFalseActivities": [
+            {
+              "type": "SetVariable",
+              "typeProperties": {
+                "variableName": "TaskKeyList",
+                "value": {
+                  "value": "@pipeline().parameters.TaskKeyList",
+                  "type": "Expression"
+                }
+              },
+              "policy": {
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Set TaskKeyList From Manual Input",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "If JobName VS Manual TaskKeyList",
+        "dependsOn": [
+          {
+            "activity": "Validate JobAuditKey",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "FabricSqlDatabaseSource",
+            "sqlReaderStoredProcedureName": "[bronze].[JobAuditStart]",
+            "storedProcedureParameters": {
+              "JobName": {
+                "value": {
+                  "value": "@pipeline().parameters.JobName",
+                  "type": "Expression"
+                },
+                "type": "String"
+              },
+              "WorkspaceID": {
+                "value": {
+                  "value": "@pipeline().DataFactory",
+                  "type": "Expression"
+                },
+                "type": "Guid"
+              },
+              "PipelineRunID": {
+                "value": {
+                  "value": "@pipeline().RunId",
+                  "type": "Expression"
+                },
+                "type": "Guid"
+              }
+            },
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "FabricSqlDatabaseTable",
+            "schema": [],
+            "connectionSettings": {
+              "name": "50b9992b_462a_47a6_a30e_ef98cc266d8d",
+              "properties": {
+                "type": "FabricSqlDatabase",
+                "typeProperties": {
+                  "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+                  "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+                },
+                "externalReferences": {
+                  "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                },
+                "annotations": []
+              }
+            },
+            "annotations": []
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Job Audit Start",
+        "dependsOn": [
+          {
+            "activity": "Set etlLoadDateTime",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "SqlServerStoredProcedure",
+        "typeProperties": {
+          "storedProcedureName": "[bronze].[JobAuditEnd]",
+          "storedProcedureParameters": {
+            "JobAuditKey": {
+              "value": {
+                "value": "@variables('JobAuditKey')",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "Status": {
+              "value": "Succeeded",
+              "type": "String"
+            }
+          }
+        },
+        "connectionSettings": {
+          "name": "c05b2a36_f22f_47be_8ac6_a71a00963819",
+          "properties": {
+            "type": "FabricSqlDatabase",
+            "typeProperties": {
+              "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+              "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+            },
+            "externalReferences": {
+              "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+            },
+            "annotations": []
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Job Audit Success",
+        "dependsOn": [
+          {
+            "activity": "Run Task Master",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "SqlServerStoredProcedure",
+        "typeProperties": {
+          "storedProcedureName": "[bronze].[JobAuditEnd]",
+          "storedProcedureParameters": {
+            "JobAuditKey": {
+              "value": {
+                "value": "@variables('JobAuditKey')",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "Status": {
+              "value": "Failed",
+              "type": "String"
+            }
+          }
+        },
+        "connectionSettings": {
+          "name": "c05b2a36_f22f_47be_8ac6_a71a00963819",
+          "properties": {
+            "type": "FabricSqlDatabase",
+            "typeProperties": {
+              "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id",
+              "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id"
+            },
+            "externalReferences": {
+              "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+            },
+            "annotations": []
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Job Audit Fail",
+        "dependsOn": [
+          {
+            "activity": "Run Task Master",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "IfCondition",
+        "typeProperties": {
+          "expression": {
+            "value": "@or(\n    equals(activity('Job Audit Start').output.firstRow.JobAuditKey,''),\n    equals(activity('Job Audit Start').output.firstRow.JobAuditKey,0)\n)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "type": "Fail",
+              "typeProperties": {
+                "message": "Failed to validate JobAuditKey.",
+                "errorCode": "000"
+              },
+              "name": "Throw Failure - No JobAuditKey",
+              "dependsOn": []
+            }
+          ],
+          "ifFalseActivities": [
+            {
+              "type": "SetVariable",
+              "typeProperties": {
+                "variableName": "JobAuditKey",
+                "value": {
+                  "value": "@string(activity('Job Audit Start').output.firstRow.JobAuditKey)",
+                  "type": "Expression"
+                }
+              },
+              "policy": {
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Set JobAuditKey",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "Validate JobAuditKey",
+        "dependsOn": [
+          {
+            "activity": "Job Audit Start",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "JobName": {
+        "type": "string"
+      },
+      "TaskKeyList": {
+        "type": "string"
+      }
+    },
+    "libraryVariables": {
+      "vl_etlControl_etlControl_ws_id": {
+        "type": "String",
+        "variableName": "etlControl_ws_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_db_id": {
+        "type": "String",
+        "variableName": "etlControl_db_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_fabricsql_item_connection_id": {
+        "type": "String",
+        "variableName": "etlControl_fabricsql_item_connection_id",
+        "libraryName": "vl_etlControl"
+      }
+    },
+    "variables": {
+      "etlLoadDateTime": {
+        "type": "String"
+      },
+      "TaskKeyList": {
+        "type": "String"
+      },
+      "JobAuditKey": {
+        "type": "String"
+      }
+    }
+  }
+}

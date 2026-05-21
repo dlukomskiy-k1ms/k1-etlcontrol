@@ -1,0 +1,341 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Get Lakehouse Task Info",
+        "type": "Lookup",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "FabricSqlDatabaseSource",
+            "sqlReaderStoredProcedureName": "[silver].[GetTaskInfo]",
+            "storedProcedureParameters": {
+              "TaskKey": {
+                "type": "Int64",
+                "value": {
+                  "value": "@pipeline().parameters.TaskKey",
+                  "type": "Expression"
+                }
+              }
+            },
+            "queryTimeout": "02:00:00",
+            "partitionOption": "None"
+          },
+          "datasetSettings": {
+            "annotations": [],
+            "connectionSettings": {
+              "name": "aecfdcbb_977c_4d90_b0ab_73a2e8ca5fbc",
+              "properties": {
+                "annotations": [],
+                "type": "FabricSqlDatabase",
+                "typeProperties": {
+                  "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+                  "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id"
+                },
+                "externalReferences": {
+                  "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                }
+              }
+            },
+            "type": "FabricSqlDatabaseTable",
+            "schema": [],
+            "typeProperties": {}
+          }
+        }
+      },
+      {
+        "name": "Run Silver Notebook",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Get Lakehouse Task Info",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": {
+            "value": "@activity('Get Lakehouse Task Info').output.firstRow.NotebookID",
+            "type": "Expression"
+          },
+          "workspaceId": {
+            "value": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+            "type": "Expression"
+          },
+          "parameters": {
+            "TaskKey": {
+              "value": {
+                "value": "@activity('Get Lakehouse Task Info').output.firstRow.TaskKey",
+                "type": "Expression"
+              },
+              "type": "int"
+            },
+            "TaskName": {
+              "value": {
+                "value": "@activity('Get Lakehouse Task Info').output.firstRow.TaskName",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "IsWatermarkEnabledFlag": {
+              "value": {
+                "value": "@activity('Get Lakehouse Task Info').output.firstRow.IsWatermarkEnabledFlag",
+                "type": "Expression"
+              },
+              "type": "bool"
+            },
+            "HighWatermarkValue": {
+              "value": {
+                "value": "@activity('Get Lakehouse Task Info').output.firstRow.HighWatermarkValue",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "JobAuditKey": {
+              "value": {
+                "value": "@pipeline().parameters.JobAuditKey",
+                "type": "Expression"
+              },
+              "type": "int"
+            },
+            "TaskAuditKey": {
+              "value": {
+                "value": "@pipeline().parameters.TaskAuditKey",
+                "type": "Expression"
+              },
+              "type": "int"
+            },
+            "etlLoadDateTime": {
+              "value": {
+                "value": "@pipeline().parameters.etlLoadDateTime",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          },
+          "sessionTag": {
+            "value": "@if(         not(empty(pipeline().parameters.SilverJobName)),     concat('silver_',        replace(             replace(pipeline().parameters.SilverJobName, ' ', '_'),             '-', '_'         )),     concat('silver_manualtaskkeylist') )",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "If IsWatermarkEnabledFlag",
+        "type": "IfCondition",
+        "dependsOn": [
+          {
+            "activity": "Run Silver Notebook",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "expression": {
+            "value": "@and(\n    equals(activity('Get Lakehouse Task Info').output.firstRow.IsWatermarkEnabledFlag, true),\n    equals(json(activity('Run Silver Notebook').output.result.exitValue).HasWatermarkUpdate, true)\n)",
+            "type": "Expression"
+          },
+          "ifFalseActivities": [],
+          "ifTrueActivities": [
+            {
+              "name": "Update Watermark",
+              "type": "SqlServerStoredProcedure",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "storedProcedureName": "[silver].[UpdateWatermarkValue]",
+                "storedProcedureParameters": {
+                  "IsWatermarkEnabledFlag": {
+                    "value": {
+                      "value": "@activity('Get Lakehouse Task Info').output.firstRow.IsWatermarkEnabledFlag",
+                      "type": "Expression"
+                    },
+                    "type": "Boolean"
+                  },
+                  "NewHighWatermarkValue": {
+                    "value": {
+                      "value": "@json(activity('Run Silver Notebook').output.result.exitValue).NewHighWatermarkValue",
+                      "type": "Expression"
+                    },
+                    "type": "Datetime"
+                  },
+                  "TaskKey": {
+                    "value": {
+                      "value": "@activity('Get Lakehouse Task Info').output.firstRow.TaskKey",
+                      "type": "Expression"
+                    },
+                    "type": "Int64"
+                  }
+                }
+              },
+              "connectionSettings": {
+                "name": "f18a49c7_7290_404e_8e0c_6963b0df7a07",
+                "properties": {
+                  "annotations": [],
+                  "type": "FabricSqlDatabase",
+                  "typeProperties": {
+                    "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+                    "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id"
+                  },
+                  "externalReferences": {
+                    "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Task Audit Update Execution Metrics",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          {
+            "activity": "Run Silver Notebook",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[silver].[TaskAuditExecutionUpdate]",
+          "storedProcedureParameters": {
+            "TaskAuditKey": {
+              "value": {
+                "value": "@pipeline().parameters.TaskAuditKey",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsRead": {
+              "value": {
+                "value": "@json(activity('Run Silver Notebook').output.result.exitValue).RowsRead",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsCopied": {
+              "value": {
+                "value": "@json(activity('Run Silver Notebook').output.result.exitValue).RowsCopied",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsSkipped": {
+              "value": {
+                "value": "@json(activity('Run Silver Notebook').output.result.exitValue).RowsSkipped",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsInserted": {
+              "value": {
+                "value": "@json(activity('Run Silver Notebook').output.result.exitValue).RowsInserted",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsUpdated": {
+              "value": {
+                "value": "@json(activity('Run Silver Notebook').output.result.exitValue).RowsUpdated",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsDeleted": {
+              "value": {
+                "value": "@json(activity('Run Silver Notebook').output.result.exitValue).RowsDeleted",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            }
+          }
+        },
+        "connectionSettings": {
+          "name": "e813c9e1_e664_4615_af45_491ecd160069",
+          "properties": {
+            "annotations": [],
+            "type": "FabricSqlDatabase",
+            "typeProperties": {
+              "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+              "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id"
+            },
+            "externalReferences": {
+              "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+            }
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "TaskKey": {
+        "type": "string"
+      },
+      "TaskType": {
+        "type": "string"
+      },
+      "etlLoadDateTime": {
+        "type": "string"
+      },
+      "SilverJobName": {
+        "type": "string"
+      },
+      "JobAuditKey": {
+        "type": "string"
+      },
+      "TaskAuditKey": {
+        "type": "string"
+      }
+    },
+    "libraryVariables": {
+      "vl_etlControl_etlControl_ws_id": {
+        "type": "String",
+        "variableName": "etlControl_ws_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_db_id": {
+        "type": "String",
+        "variableName": "etlControl_db_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_fabricsql_item_connection_id": {
+        "type": "String",
+        "variableName": "etlControl_fabricsql_item_connection_id",
+        "libraryName": "vl_etlControl"
+      },
+      "vl_etlControl_etlControl_fabriclh_item_connection_id": {
+        "type": "String",
+        "variableName": "etlControl_fabriclh_item_connection_id",
+        "libraryName": "vl_etlControl"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "ExecutePipeline",
+        "typeProperties": {
+          "pipeline": {
+            "referenceName": "190408ba-d991-8ab1-4da1-ba926ed5ef32",
+            "type": "PipelineReference"
+          },
+          "parameters": {
+            "GoldJobName": "General Dims OR REPLACE GOLD JOB NAME HERE"
+          },
+          "waitOnCompletion": true
+        },
+        "policy": {
+          "secureInput": false
+        },
+        "name": "General Dims",
+        "description": "EX: dim_date & dim_entrauser",
+        "dependsOn": []
+      }
+    ]
+  }
+}

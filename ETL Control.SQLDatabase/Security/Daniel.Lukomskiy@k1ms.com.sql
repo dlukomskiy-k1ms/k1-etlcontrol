@@ -1,0 +1,6 @@
+CREATE USER [Daniel.Lukomskiy@k1ms.com]
+    WITH SID = 0x2CB6C2B05F8C324FA8B99FC8564FC806, TYPE = E;
+
+
+GO
+
