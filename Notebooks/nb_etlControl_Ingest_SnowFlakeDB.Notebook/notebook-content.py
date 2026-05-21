@@ -113,6 +113,39 @@ SourceQuery = "SELECT * FROM VIPSHARE_KEG1SBG.C_10007233_DGB53269.WAREHOUSE_PICK
 
 # CELL ********************
 
+# This cell is generated from runtime parameters. Learn more: https://go.microsoft.com/fwlink/?linkid=2161015
+JobAuditKey = 32
+TaskAuditKey = 199
+etlLoadDateTime = "20260521T022047Z"
+TaskKey = 87
+SourceName = "KEG1MOVIP"
+SourceType = "snowflake"
+IsWatermarkEnabledFlag = True
+PrimaryKeyColumnList = "WAREHOUSE_PICKING_SHIFT_CODE"
+SortByColumnList = "UPDATE_TIMESTAMP"
+SourceDatabaseName = "VIPMIRROR_KEG1MO_ONLY"
+SourceSchemaName = "FILTERED_VIP_VIEWS"
+SourceTableName = "WAREHOUSE_PICKING_SHIFT_DIMENSION"
+BronzeWorkspaceName = "K1MS - [1 Dev] 01 ETL Control"
+BronzeWorkspaceId = "58d5660e-b470-43bb-9b03-52ccccb99ce6"
+BronzeLakehouseName = "lh_TestIngestion"
+BronzeLakehouseId = "776c8665-f2b2-4049-8150-af4090941340"
+BronzeSchemaName = "KEG1MOVIP"
+BronzeTableName = "WAREHOUSE_PICKING_SHIFT_DIMENSION"
+BronzeLoadMethod = "merge"
+WatermarkColumn = "UPDATE_TIMESTAMP"
+SourceQuery = "SELECT *  FROM VIPMIRROR_KEG1MO_ONLY.FILTERED_VIP_VIEWS.WAREHOUSE_PICKING_SHIFT_DIMENSION WHERE SHIFT_START_DATE >= '2023-01-01'"
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
 %run nb_etlControl_Utils
 
 # METADATA ********************
@@ -325,6 +358,8 @@ df = add_audit_columns(df)
 # CELL ********************
 
 # Load data into bronze
+spark.conf.set("spark.sql.caseSensitive", "True")
+
 if BronzeSchemaName:
     table_name = f"{BronzeSchemaName}.{BronzeTableName}"
 else:
