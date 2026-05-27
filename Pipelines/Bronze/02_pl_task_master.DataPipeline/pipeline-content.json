@@ -53,7 +53,7 @@
       {
         "type": "ForEach",
         "typeProperties": {
-          "batchCount": 2,
+          "batchCount": 5,
           "items": {
             "value": "@activity('Get Task Types').output.value",
             "type": "Expression"

@@ -15,709 +15,139 @@ insert into bronze.Notebook VALUES ('nb_etlControl_Ingest_SnowFlakeDB','Ingest d
 select * from bronze.Locations;
 insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
 VALUES ('58d5660e-b470-43bb-9b03-52ccccb99ce6','K1MS - [1 Dev] 01 ETL Control','776c8665-f2b2-4049-8150-af4090941340','lh_TestIngestion');
+insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
+VALUES ('35511d3e-0ac8-43a6-99e7-83c6071ddf70','K1MS - [1 Dev] Data Hub','c5e9d794-da5f-487f-9a50-55da74cbc67a','lh_SBG');
+insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
+VALUES ('35511d3e-0ac8-43a6-99e7-83c6071ddf70','K1MS - [1 Dev] Data Hub','862e01c4-7fe8-4c13-a355-a202a224f5f5','lh_CAFFEY');
+insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
+VALUES ('35511d3e-0ac8-43a6-99e7-83c6071ddf70','K1MS - [1 Dev] Data Hub','77c371ea-9f31-4fa2-859d-47e0cc7452be','lh_HDC');
+insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
+VALUES ('35511d3e-0ac8-43a6-99e7-83c6071ddf70','K1MS - [1 Dev] Data Hub','01869c71-0709-401e-a652-0da3247b93d0','lh_KEG1O');
+insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
+VALUES ('35511d3e-0ac8-43a6-99e7-83c6071ddf70','K1MS - [1 Dev] Data Hub','2bd03d80-52d0-49a1-a03e-d5658d22106a','lh_KEG1CO');
+insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
+VALUES ('35511d3e-0ac8-43a6-99e7-83c6071ddf70','K1MS - [1 Dev] Data Hub','3aba55f5-af7e-4cf9-894f-cf74347e6414','lh_KEG1RC');
+insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
+VALUES ('35511d3e-0ac8-43a6-99e7-83c6071ddf70','K1MS - [1 Dev] Data Hub','746ff326-f9d7-4d93-aae9-a87f66b2a870','lh_KEG1MO');
+insert into bronze.Locations (WorkspaceId,WorkspaceName,LakehouseId,LakehouseName)
+VALUES ('35511d3e-0ac8-43a6-99e7-83c6071ddf70','K1MS - [1 Dev] Data Hub','7e7aab46-2157-4497-ba51-417c49585101','lh_KEG1IA');
 
 select * from bronze.Task;
 
---- SBG VIP TASKS
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'WAREHOUSE_PICKING_SHIFT_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','WAREHOUSE_PICKING_SHIFT_DIMENSION',
-'WAREHOUSE_PICKING_SHIFT_CODE','UPDATE_TIMESTAMP','WHERE SHIFT_START_DATE >= ''2023-01-01''','filter',1,'dbo','WAREHOUSE_PICKING_SHIFT_DIMENSION','merge','UPDATE_TIMESTAMP');
+InsertScript
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'WAREHOUSE_PICKING_SHIFT_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','WAREHOUSE_PICKING_SHIFT_DIMENSION','WAREHOUSE_PICKING_SHIFT_CODE','UPDATE_TIMESTAMP','WHERE SHIFT_START_DATE >= ''2023-01-01''','filter',1,NULL,'WAREHOUSE_PICKING_SHIFT_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'ACCOUNT_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','ACCOUNT_DIMENSION','ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'ACCOUNT_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','ITEM_DIMENSION','ITEM_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'ITEM_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'WAREHOUSE_ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','WAREHOUSE_ITEM_DIMENSION','WAREHOUSE_ITEM_CODE,WAREHOUSE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'WAREHOUSE_ITEM_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'INVOICE_REASON_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','INVOICE_REASON_DIMENSION','INVOICE_REASON_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'INVOICE_REASON_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'SUPPLIER_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','SUPPLIER_DIMENSION','SUPPLIER_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'SUPPLIER_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'SALES_PERSON_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','SALES_PERSON_DIMENSION','SALES_PERSON_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'SALES_PERSON_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'SALES_SUPERVISOR_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','SALES_SUPERVISOR_DIMENSION','SALES_SUPERVISOR_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'SALES_SUPERVISOR_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'SALES_POINTER_ACCOUNT_RELATION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','SALES_POINTER_ACCOUNT_RELATION','SALES_POINTER_CODE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'SALES_POINTER_ACCOUNT_RELATION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'PICKING_EMPLOYEE_BREAK_MEASURE',1,'DatabaseTask',0,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','PICKING_EMPLOYEE_BREAK_MEASURE','WAREHOUSE_CODE,PICKING_EMPLOYEE_CODE,EMPLOYEE_BREAK_DATE,EMPLOYEE_PICKING_BREAK_TYPE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP','WHERE EMPLOYEE_BREAK_DATE >= ''2023-01-01''','filter',1,NULL,'PICKING_EMPLOYEE_BREAK_MEASURE','reload','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'PALLET_PICKING_ACTIVITY_MEASURE',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','PALLET_PICKING_ACTIVITY_MEASURE','PICKER_EMPLOYEE_CODE,PALLET_PICKING_DATE,WAREHOUSE_PICKING_SHIFT_CODE,PALLET_LICENSE_PLATE_CODE,TRUCK_LOAD_CODE','UPDATE_TIMESTAMP','WHERE PALLET_PICKING_DATE >= ''2023-01-01''','filter',1,NULL,'PALLET_PICKING_ACTIVITY_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'ORDER_MEASURE',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','ORDER_MEASURE','ORDER_CODE,ORDER_LINE_NUMBER,ORDER_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE ORDER_DATE >= ''2023-01-01''','filter',1,NULL,'ORDER_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'INVENTORY_ON_HAND_MEASURE',1,'DatabaseTask',0,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','INVENTORY_ON_HAND_MEASURE','INVN_AS_OF_DATE,WAREHOUSE_CODE,ITEM_CODE,CODE_DATE,WAREHOUSE_SLOT_CODE,INVENTORY_TRANS_TYPE_CODE,INVN_VIP_UNIT_ID,INVN_LINE_NUMBER','UPDATE_TIMESTAMP','INVN_AS_OF_DATE >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,NULL,'INVENTORY_ON_HAND_MEASURE','reload','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'INVOICE_MEASURE',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','INVOICE_MEASURE','INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE INVOICE_DATE >= ''2023-01-01''','filter',1,NULL,'INVOICE_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (1,'WAREHOUSE_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','WAREHOUSE_DIMENSION','WAREHOUSE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,NULL,'WAREHOUSE_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'Products',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"Products"','"ProductID"','"TimeUpdated"',NULL,'incremental',2,NULL,'Products','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'AssignedUsers',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"AssignedUsers"','"AssignedUserID"','"TimeUpdated"',NULL,'incremental',2,NULL,'AssignedUsers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'Chains',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"Chains"','"ChainID"','"TimeUpdated"',NULL,'incremental',2,NULL,'Chains','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'Suppliers',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"Suppliers"','"SupplierID"','"TimeUpdated"',NULL,'incremental',2,NULL,'Suppliers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'Brands',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"Brands"','"BrandID"','"TimeUpdated"',NULL,'incremental',2,NULL,'Brands','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'Packages',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"Packages"','"PackageID"','"TimeUpdated"',NULL,'incremental',2,NULL,'Packages','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'Customers',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"Customers"','"CustomerID"','"TimeUpdated"',NULL,'incremental',2,NULL,'Customers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'CustomerTypes',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"CustomerTypes"','"CustomerTypeID"','"TimeUpdated"',NULL,'incremental',2,NULL,'CustomerTypes','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'Locations',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"Locations"','"LocationID"','"TimeUpdated"',NULL,'incremental',2,NULL,'Locations','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'Territories',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"Territories"','"TerritoryID"','"TimeUpdated"',NULL,'incremental',2,NULL,'Territories','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'ProductTypes',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"ProductTypes"','"ProductTypeID"','"TimeUpdated"',NULL,'incremental',2,NULL,'ProductTypes','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'InventoryDaily',1,'DatabaseTask',0,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"InventoryDaily"','"InventoryDailyID"','"TimeUpdated"','"Date" >= DATEADD(DAY, -90, CURRENT_DATE)','filter',2,NULL,'InventoryDaily','reload','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (2,'InvoiceTransReport',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','"InvoiceTransReport"','"InvoiceTransID"','"TimeUpdated"','"LoadSheetDate" >= ''2023-01-01''','filter',2,NULL,'InvoiceTransReport','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'WAREHOUSE_PICKING_SHIFT_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','WAREHOUSE_PICKING_SHIFT_DIMENSION','WAREHOUSE_PICKING_SHIFT_CODE','UPDATE_TIMESTAMP','WHERE SHIFT_START_DATE >= ''2023-01-01''','filter',3,NULL,'WAREHOUSE_PICKING_SHIFT_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'ACCOUNT_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','ACCOUNT_DIMENSION','ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'ACCOUNT_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','ITEM_DIMENSION','ITEM_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'ITEM_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'WAREHOUSE_ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','WAREHOUSE_ITEM_DIMENSION','WAREHOUSE_ITEM_CODE,WAREHOUSE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'WAREHOUSE_ITEM_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'INVOICE_REASON_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','INVOICE_REASON_DIMENSION','INVOICE_REASON_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'INVOICE_REASON_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'SUPPLIER_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','SUPPLIER_DIMENSION','SUPPLIER_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'SUPPLIER_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'SALES_PERSON_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','SALES_PERSON_DIMENSION','SALES_PERSON_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'SALES_PERSON_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'SALES_SUPERVISOR_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','SALES_SUPERVISOR_DIMENSION','SALES_SUPERVISOR_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'SALES_SUPERVISOR_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'SALES_POINTER_ACCOUNT_RELATION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','SALES_POINTER_ACCOUNT_RELATION','SALES_POINTER_CODE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'SALES_POINTER_ACCOUNT_RELATION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'PICKING_EMPLOYEE_BREAK_MEASURE',1,'DatabaseTask',0,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','PICKING_EMPLOYEE_BREAK_MEASURE','WAREHOUSE_CODE,PICKING_EMPLOYEE_CODE,EMPLOYEE_BREAK_DATE,EMPLOYEE_PICKING_BREAK_TYPE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP','WHERE EMPLOYEE_BREAK_DATE >= ''2023-01-01''','filter',3,NULL,'PICKING_EMPLOYEE_BREAK_MEASURE','reload','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'PALLET_PICKING_ACTIVITY_MEASURE',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','PALLET_PICKING_ACTIVITY_MEASURE','PICKER_EMPLOYEE_CODE,PALLET_PICKING_DATE,WAREHOUSE_PICKING_SHIFT_CODE,PALLET_LICENSE_PLATE_CODE,TRUCK_LOAD_CODE','UPDATE_TIMESTAMP','WHERE PALLET_PICKING_DATE >= ''2023-01-01''','filter',3,NULL,'PALLET_PICKING_ACTIVITY_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'ORDER_MEASURE',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','ORDER_MEASURE','ORDER_CODE,ORDER_LINE_NUMBER,ORDER_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE ORDER_DATE >= ''2023-01-01''','filter',3,NULL,'ORDER_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'INVENTORY_ON_HAND_MEASURE',1,'DatabaseTask',0,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','INVENTORY_ON_HAND_MEASURE','INVN_AS_OF_DATE,WAREHOUSE_CODE,ITEM_CODE,CODE_DATE,WAREHOUSE_SLOT_CODE,INVENTORY_TRANS_TYPE_CODE,INVN_VIP_UNIT_ID,INVN_LINE_NUMBER','UPDATE_TIMESTAMP','INVN_AS_OF_DATE >= DATEADD(DAY, -90, CURRENT_DATE)','filter',3,NULL,'INVENTORY_ON_HAND_MEASURE','reload','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'INVOICE_MEASURE',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','INVOICE_MEASURE','INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE INVOICE_DATE >= ''2023-01-01''','filter',3,NULL,'INVOICE_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (3,'WAREHOUSE_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','WAREHOUSE_DIMENSION','WAREHOUSE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',3,NULL,'WAREHOUSE_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'Products',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"Products"','"ProductID"','"TimeUpdated"',NULL,'incremental',4,NULL,'Products','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'AssignedUsers',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"AssignedUsers"','"AssignedUserID"','"TimeUpdated"',NULL,'incremental',4,NULL,'AssignedUsers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'Chains',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"Chains"','"ChainID"','"TimeUpdated"',NULL,'incremental',4,NULL,'Chains','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'TradeChannels',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"TradeChannels"','"TradeChannelID"','"TimeUpdated"',NULL,'incremental',4,NULL,'TradeChannels','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'Suppliers',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"Suppliers"','"SupplierID"','"TimeUpdated"',NULL,'incremental',4,NULL,'Suppliers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'Brands',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"Brands"','"BrandID"','"TimeUpdated"',NULL,'incremental',4,NULL,'Brands','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'Packages',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"Packages"','"PackageID"','"TimeUpdated"',NULL,'incremental',4,NULL,'Packages','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'Customers',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"Customers"','"CustomerID"','"TimeUpdated"',NULL,'incremental',4,NULL,'Customers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'CustomerTypes',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"CustomerTypes"','"CustomerTypeID"','"TimeUpdated"',NULL,'incremental',4,NULL,'CustomerTypes','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'Locations',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"Locations"','"LocationID"','"TimeUpdated"',NULL,'incremental',4,NULL,'Locations','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'Territories',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"Territories"','"TerritoryID"','"TimeUpdated"',NULL,'incremental',4,NULL,'Territories','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'ProductTypes',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"ProductTypes"','"ProductTypeID"','"TimeUpdated"',NULL,'incremental',4,NULL,'ProductTypes','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'InventoryDaily',1,'DatabaseTask',0,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"InventoryDaily"','"InventoryDailyID"','"TimeUpdated"','"Date" >= DATEADD(DAY, -90, CURRENT_DATE)','filter',4,NULL,'InventoryDaily','reload','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (4,'InvoiceTransReport',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','"InvoiceTransReport"','"InvoiceTransID"','"TimeUpdated"','"LoadSheetDate" >= ''2023-01-01''','filter',4,NULL,'InvoiceTransReport','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'Products',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"Products"','"ProductID"','"TimeUpdated"',NULL,'incremental',5,NULL,'Products','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'AssignedUsers',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"AssignedUsers"','"AssignedUserID"','"TimeUpdated"',NULL,'incremental',5,NULL,'AssignedUsers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'Chains',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"Chains"','"ChainID"','"TimeUpdated"',NULL,'incremental',5,NULL,'Chains','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'TradeChannels',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"TradeChannels"','"TradeChannelID"','"TimeUpdated"',NULL,'incremental',5,NULL,'TradeChannels','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'Suppliers',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"Suppliers"','"SupplierID"','"TimeUpdated"',NULL,'incremental',5,NULL,'Suppliers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'Brands',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"Brands"','"BrandID"','"TimeUpdated"',NULL,'incremental',5,NULL,'Brands','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'Packages',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"Packages"','"PackageID"','"TimeUpdated"',NULL,'incremental',5,NULL,'Packages','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'Customers',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"Customers"','"CustomerID"','"TimeUpdated"',NULL,'incremental',5,NULL,'Customers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'CustomerTypes',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"CustomerTypes"','"CustomerTypeID"','"TimeUpdated"',NULL,'incremental',5,NULL,'CustomerTypes','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'Locations',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"Locations"','"LocationID"','"TimeUpdated"',NULL,'incremental',5,NULL,'Locations','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'Territories',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"Territories"','"TerritoryID"','"TimeUpdated"',NULL,'incremental',5,NULL,'Territories','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'ProductTypes',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"ProductTypes"','"ProductTypeID"','"TimeUpdated"',NULL,'incremental',5,NULL,'ProductTypes','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'InventoryDaily',1,'DatabaseTask',0,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"InventoryDaily"','"InventoryDailyID"','"TimeUpdated"','"Date" >= DATEADD(DAY, -90, CURRENT_DATE)','filter',5,NULL,'InventoryDaily','reload','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (5,'InvoiceTransReport',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','"InvoiceTransReport"','"InvoiceTransID"','"TimeUpdated"','"LoadSheetDate" >= ''2023-01-01''','filter',5,NULL,'InvoiceTransReport','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'WAREHOUSE_PICKING_SHIFT_DIMENSION',0,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_PICKING_SHIFT_DIMENSION','WAREHOUSE_PICKING_SHIFT_CODE','UPDATE_TIMESTAMP','WHERE SHIFT_START_DATE >= ''2023-01-01''','filter',6,NULL,'WAREHOUSE_PICKING_SHIFT_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'ACCOUNT_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','ACCOUNT_DIMENSION','ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'ACCOUNT_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','ITEM_DIMENSION','ITEM_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'ITEM_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'WAREHOUSE_ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_ITEM_DIMENSION','WAREHOUSE_ITEM_CODE,WAREHOUSE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'WAREHOUSE_ITEM_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'INVOICE_REASON_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','INVOICE_REASON_DIMENSION','INVOICE_REASON_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'INVOICE_REASON_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'SUPPLIER_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','SUPPLIER_DIMENSION','SUPPLIER_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'SUPPLIER_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'SALES_PERSON_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','SALES_PERSON_DIMENSION','SALES_PERSON_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'SALES_PERSON_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'SALES_SUPERVISOR_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','SALES_SUPERVISOR_DIMENSION','SALES_SUPERVISOR_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'SALES_SUPERVISOR_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'SALES_POINTER_ACCOUNT_RELATION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','SALES_POINTER_ACCOUNT_RELATION','SALES_POINTER_CODE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'SALES_POINTER_ACCOUNT_RELATION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'ORDER_MEASURE',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','ORDER_MEASURE','ORDER_CODE,ORDER_LINE_NUMBER,ORDER_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE ORDER_DATE >= ''2023-01-01''','filter',6,NULL,'ORDER_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'INVOICE_MEASURE',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','INVOICE_MEASURE','INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE INVOICE_DATE >= ''2023-01-01''','filter',6,NULL,'INVOICE_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'PICKING_EMPLOYEE_BREAK_MEASURE',0,'DatabaseTask',0,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','PICKING_EMPLOYEE_BREAK_MEASURE','WAREHOUSE_CODE,PICKING_EMPLOYEE_CODE,EMPLOYEE_BREAK_DATE,EMPLOYEE_PICKING_BREAK_TYPE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP','WHERE EMPLOYEE_BREAK_DATE >= ''2023-01-01''','filter',6,NULL,'PICKING_EMPLOYEE_BREAK_MEASURE','reload','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'PALLET_PICKING_ACTIVITY_MEASURE',0,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','PALLET_PICKING_ACTIVITY_MEASURE','PICKER_EMPLOYEE_CODE,PALLET_PICKING_DATE,WAREHOUSE_PICKING_SHIFT_CODE,PALLET_LICENSE_PLATE_CODE,TRUCK_LOAD_CODE','UPDATE_TIMESTAMP','WHERE PALLET_PICKING_DATE >= ''2023-01-01''','filter',6,NULL,'PALLET_PICKING_ACTIVITY_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'INVENTORY_ON_HAND_MEASURE',1,'DatabaseTask',0,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','INVENTORY_ON_HAND_MEASURE','INVN_AS_OF_DATE,WAREHOUSE_CODE,ITEM_CODE,CODE_DATE,WAREHOUSE_SLOT_CODE,INVENTORY_TRANS_TYPE_CODE,INVN_VIP_UNIT_ID,INVN_LINE_NUMBER','UPDATE_TIMESTAMP','INVN_AS_OF_DATE >= DATEADD(DAY, -90, CURRENT_DATE)','filter',6,NULL,'INVENTORY_ON_HAND_MEASURE','reload','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (6,'WAREHOUSE_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_DIMENSION','WAREHOUSE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',6,NULL,'WAREHOUSE_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'WAREHOUSE_PICKING_SHIFT_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_PICKING_SHIFT_DIMENSION','WAREHOUSE_PICKING_SHIFT_CODE','UPDATE_TIMESTAMP','WHERE SHIFT_START_DATE >= ''2023-01-01''','filter',7,NULL,'WAREHOUSE_PICKING_SHIFT_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'ACCOUNT_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','ACCOUNT_DIMENSION','ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'ACCOUNT_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','ITEM_DIMENSION','ITEM_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'ITEM_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'WAREHOUSE_ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_ITEM_DIMENSION','WAREHOUSE_ITEM_CODE,WAREHOUSE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'WAREHOUSE_ITEM_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'INVOICE_REASON_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','INVOICE_REASON_DIMENSION','INVOICE_REASON_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'INVOICE_REASON_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'SUPPLIER_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','SUPPLIER_DIMENSION','SUPPLIER_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'SUPPLIER_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'SALES_PERSON_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','SALES_PERSON_DIMENSION','SALES_PERSON_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'SALES_PERSON_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'SALES_SUPERVISOR_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','SALES_SUPERVISOR_DIMENSION','SALES_SUPERVISOR_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'SALES_SUPERVISOR_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'SALES_POINTER_ACCOUNT_RELATION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','SALES_POINTER_ACCOUNT_RELATION','SALES_POINTER_CODE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'SALES_POINTER_ACCOUNT_RELATION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'PICKING_EMPLOYEE_BREAK_MEASURE',1,'DatabaseTask',0,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','PICKING_EMPLOYEE_BREAK_MEASURE','WAREHOUSE_CODE,PICKING_EMPLOYEE_CODE,EMPLOYEE_BREAK_DATE,EMPLOYEE_PICKING_BREAK_TYPE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP','WHERE EMPLOYEE_BREAK_DATE >= ''2023-01-01''','filter',7,NULL,'PICKING_EMPLOYEE_BREAK_MEASURE','reload','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'PALLET_PICKING_ACTIVITY_MEASURE',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','PALLET_PICKING_ACTIVITY_MEASURE','PICKER_EMPLOYEE_CODE,PALLET_PICKING_DATE,WAREHOUSE_PICKING_SHIFT_CODE,PALLET_LICENSE_PLATE_CODE,TRUCK_LOAD_CODE','UPDATE_TIMESTAMP','WHERE PALLET_PICKING_DATE >= ''2023-01-01''','filter',7,NULL,'PALLET_PICKING_ACTIVITY_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'ORDER_MEASURE',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','ORDER_MEASURE','ORDER_CODE,ORDER_LINE_NUMBER,ORDER_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE ORDER_DATE >= ''2023-01-01''','filter',7,NULL,'ORDER_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'INVENTORY_ON_HAND_MEASURE',1,'DatabaseTask',0,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','INVENTORY_ON_HAND_MEASURE','INVN_AS_OF_DATE,WAREHOUSE_CODE,ITEM_CODE,CODE_DATE,WAREHOUSE_SLOT_CODE,INVENTORY_TRANS_TYPE_CODE,INVN_VIP_UNIT_ID,INVN_LINE_NUMBER','UPDATE_TIMESTAMP','INVN_AS_OF_DATE >= DATEADD(DAY, -90, CURRENT_DATE)','filter',7,NULL,'INVENTORY_ON_HAND_MEASURE','reload','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'INVOICE_MEASURE',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','INVOICE_MEASURE','INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE INVOICE_DATE >= ''2023-01-01''','filter',7,NULL,'INVOICE_MEASURE','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (7,'WAREHOUSE_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_DIMENSION','WAREHOUSE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',7,NULL,'WAREHOUSE_DIMENSION','merge','UPDATE_TIMESTAMP')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'Products',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"Products"','"ProductID"','"TimeUpdated"',NULL,'incremental',8,NULL,'Products','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'AssignedUsers',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"AssignedUsers"','"AssignedUserID"','"TimeUpdated"',NULL,'incremental',8,NULL,'AssignedUsers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'Chains',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"Chains"','"ChainID"','"TimeUpdated"',NULL,'incremental',8,NULL,'Chains','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'TradeChannels',0,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"TradeChannels"','"TradeChannelID"','"TimeUpdated"',NULL,'incremental',8,NULL,'TradeChannels','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'Suppliers',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"Suppliers"','"SupplierID"','"TimeUpdated"',NULL,'incremental',8,NULL,'Suppliers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'Brands',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"Brands"','"BrandID"','"TimeUpdated"',NULL,'incremental',8,NULL,'Brands','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'Packages',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"Packages"','"PackageID"','"TimeUpdated"',NULL,'incremental',8,NULL,'Packages','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'Customers',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"Customers"','"CustomerID"','"TimeUpdated"',NULL,'incremental',8,NULL,'Customers','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'CustomerTypes',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"CustomerTypes"','"CustomerTypeID"','"TimeUpdated"',NULL,'incremental',8,NULL,'CustomerTypes','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'Locations',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"Locations"','"LocationID"','"TimeUpdated"',NULL,'incremental',8,NULL,'Locations','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'Territories',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"Territories"','"TerritoryID"','"TimeUpdated"',NULL,'incremental',8,NULL,'Territories','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'ProductTypes',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"ProductTypes"','"ProductTypeID"','"TimeUpdated"',NULL,'incremental',8,NULL,'ProductTypes','merge','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'InventoryDaily',1,'DatabaseTask',0,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"InventoryDaily"','"InventoryDailyID"','"TimeUpdated"','"Date" >= DATEADD(DAY, -90, CURRENT_DATE)','filter',8,NULL,'InventoryDaily','reload','"TimeUpdated"')
+INSERT INTO bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn) VALUES (8,'InvoiceTransReport',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','"InvoiceTransReport"','"InvoiceTransID"','"TimeUpdated"','"LoadSheetDate" >= ''2023-01-01''','filter',8,NULL,'InvoiceTransReport','merge','"TimeUpdated"')
 
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'ACCOUNT_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','ACCOUNT_DIMENSION',
-'ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','ACCOUNT_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','ITEM_DIMENSION',
-'ITEM_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','ITEM_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'WAREHOUSE_ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','WAREHOUSE_ITEM_DIMENSION',
-'WAREHOUSE_ITEM_CODE,WAREHOUSE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','WAREHOUSE_ITEM_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'INVOICE_REASON_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','INVOICE_REASON_DIMENSION',
-'INVOICE_REASON_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','INVOICE_REASON_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'SUPPLIER_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','SUPPLIER_DIMENSION',
-'SUPPLIER_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SUPPLIER_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'SALES_PERSON_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','SALES_PERSON_DIMENSION',
-'SALES_PERSON_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_PERSON_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'SALES_SUPERVISOR_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','SALES_SUPERVISOR_DIMENSION',
-'SALES_SUPERVISOR_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_SUPERVISOR_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'SALES_POINTER_ACCOUNT_RELATION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','SALES_POINTER_ACCOUNT_RELATION',
-'SALES_POINTER_CODE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_POINTER_ACCOUNT_RELATION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'PICKING_EMPLOYEE_BREAK_MEASURE',1,'DatabaseTask',0,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','PICKING_EMPLOYEE_BREAK_MEASURE',
-'WAREHOUSE_CODE,PICKING_EMPLOYEE_CODE,EMPLOYEE_BREAK_DATE,EMPLOYEE_PICKING_BREAK_TYPE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP','WHERE EMPLOYEE_BREAK_DATE >= ''2023-01-01''','filter',1,'dbo','PICKING_EMPLOYEE_BREAK_MEASURE','reload','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'PALLET_PICKING_ACTIVITY_MEASURE',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','PALLET_PICKING_ACTIVITY_MEASURE',
-'PICKER_EMPLOYEE_CODE,PALLET_PICKING_DATE,WAREHOUSE_PICKING_SHIFT_CODE,PALLET_LICENSE_PLATE_CODE,TRUCK_LOAD_CODE','UPDATE_TIMESTAMP','WHERE PALLET_PICKING_DATE >= ''2023-01-01''','filter',1,'dbo','PALLET_PICKING_ACTIVITY_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'ORDER_MEASURE',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','ORDER_MEASURE',
-'ORDER_CODE,ORDER_LINE_NUMBER,ORDER_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE ORDER_DATE >= ''2023-01-01''','filter',1,'dbo','ORDER_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'INVENTORY_ON_HAND_MEASURE',1,'DatabaseTask',0,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','INVENTORY_ON_HAND_MEASURE',
-'INVN_AS_OF_DATE,WAREHOUSE_CODE,ITEM_CODE,CODE_DATE,WAREHOUSE_SLOT_CODE,INVENTORY_TRANS_TYPE_CODE,INVN_VIP_UNIT_ID,INVN_LINE_NUMBER','UPDATE_TIMESTAMP','INVN_AS_OF_DATE >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,'dbo','INVENTORY_ON_HAND_MEASURE','reload','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'INVOICE_MEASURE',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','INVOICE_MEASURE',
-'INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE INVOICE_DATE >= ''2023-01-01''','filter',1,'dbo','INVOICE_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (1,'WAREHOUSE_DIMENSION',1,'DatabaseTask',1,NULL,'SBG','SBGVIP','snowflake',1,'VIPSHARE_KEG1SBG','C_10007233_DGB53269','WAREHOUSE_DIMENSION',
-'INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','WAREHOUSE_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-
---- CAFFEY Encompass TASKS
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'Products',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','Products',
-'ProductID','TimeUpdated',NULL,'incremental',1,'dbo','Products','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'AssignedUsers',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','AssignedUsers',
-'AssignedUserID','TimeUpdated',NULL,'incremental',1,'dbo','AssignedUsers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'Chains',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','Chains',
-'ChainID','TimeUpdated',NULL,'incremental',1,'dbo','Chains','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'Suppliers',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','Suppliers',
-'SupplierID','TimeUpdated',NULL,'incremental',1,'dbo','Suppliers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'Brands',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','Brands',
-'BrandID','TimeUpdated',NULL,'incremental',1,'dbo','Brands','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'Packages',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','Packages',
-'PackageID','TimeUpdated',NULL,'incremental',1,'dbo','Packages','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'Customers',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','Customers',
-'CustomerID','TimeUpdated',NULL,'incremental',1,'dbo','Customers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'CustomerTypes',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','CustomerTypes',
-'CustomerTypeID','TimeUpdated',NULL,'incremental',1,'dbo','CustomerTypes','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'Locations',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','Locations',
-'LocationID','TimeUpdated',NULL,'incremental',1,'dbo','Locations','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'Territories',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','Territories',
-'TerritoryID','TimeUpdated',NULL,'incremental',1,'dbo','Territories','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'ProductTypes',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','ProductTypes',
-'ProductTypeID','TimeUpdated',NULL,'incremental',1,'dbo','ProductTypes','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'InventoryDaily',1,'DatabaseTask',0,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','InventoryDaily',
-'InventoryDailyID','TimeUpdated','"Date" >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,'dbo','InventoryDaily','reload','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (2,'InvoiceTransReport',1,'DatabaseTask',1,NULL,'CAFFEY','CAFFEYEncompass','snowflake',1,'TOTALK1MS','PUBLIC','InvoiceTransReport',
-'InvoiceTransID','TimeUpdated','"LoadSheetDate" >= ''2023-01-01''','filter',1,'dbo','InvoiceTransReport','merge','TimeUpdated');
-
-
---- HDC VIP TASKS
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'WAREHOUSE_PICKING_SHIFT_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','WAREHOUSE_PICKING_SHIFT_DIMENSION',
-'WAREHOUSE_PICKING_SHIFT_CODE','UPDATE_TIMESTAMP','WHERE SHIFT_START_DATE >= ''2023-01-01''','filter',1,'dbo','WAREHOUSE_PICKING_SHIFT_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'ACCOUNT_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','ACCOUNT_DIMENSION',
-'ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','ACCOUNT_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','ITEM_DIMENSION',
-'ITEM_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','ITEM_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'WAREHOUSE_ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','WAREHOUSE_ITEM_DIMENSION',
-'WAREHOUSE_ITEM_CODE,WAREHOUSE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','WAREHOUSE_ITEM_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'INVOICE_REASON_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','INVOICE_REASON_DIMENSION',
-'INVOICE_REASON_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','INVOICE_REASON_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'SUPPLIER_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','SUPPLIER_DIMENSION',
-'SUPPLIER_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SUPPLIER_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'SALES_PERSON_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','SALES_PERSON_DIMENSION',
-'SALES_PERSON_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_PERSON_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'SALES_SUPERVISOR_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','SALES_SUPERVISOR_DIMENSION',
-'SALES_SUPERVISOR_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_SUPERVISOR_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'SALES_POINTER_ACCOUNT_RELATION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','SALES_POINTER_ACCOUNT_RELATION',
-'SALES_POINTER_CODE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_POINTER_ACCOUNT_RELATION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'PICKING_EMPLOYEE_BREAK_MEASURE',1,'DatabaseTask',0,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','PICKING_EMPLOYEE_BREAK_MEASURE',
-'WAREHOUSE_CODE,PICKING_EMPLOYEE_CODE,EMPLOYEE_BREAK_DATE,EMPLOYEE_PICKING_BREAK_TYPE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP','WHERE EMPLOYEE_BREAK_DATE >= ''2023-01-01''','filter',1,'dbo','PICKING_EMPLOYEE_BREAK_MEASURE','reload','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'PALLET_PICKING_ACTIVITY_MEASURE',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','PALLET_PICKING_ACTIVITY_MEASURE',
-'PICKER_EMPLOYEE_CODE,PALLET_PICKING_DATE,WAREHOUSE_PICKING_SHIFT_CODE,PALLET_LICENSE_PLATE_CODE,TRUCK_LOAD_CODE','UPDATE_TIMESTAMP','WHERE PALLET_PICKING_DATE >= ''2023-01-01''','filter',1,'dbo','PALLET_PICKING_ACTIVITY_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'ORDER_MEASURE',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','ORDER_MEASURE',
-'ORDER_CODE,ORDER_LINE_NUMBER,ORDER_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE ORDER_DATE >= ''2023-01-01''','filter',1,'dbo','ORDER_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'INVENTORY_ON_HAND_MEASURE',1,'DatabaseTask',0,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','INVENTORY_ON_HAND_MEASURE',
-'INVN_AS_OF_DATE,WAREHOUSE_CODE,ITEM_CODE,CODE_DATE,WAREHOUSE_SLOT_CODE,INVENTORY_TRANS_TYPE_CODE,INVN_VIP_UNIT_ID,INVN_LINE_NUMBER','UPDATE_TIMESTAMP','INVN_AS_OF_DATE >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,'dbo','INVENTORY_ON_HAND_MEASURE','reload','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'INVOICE_MEASURE',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','INVOICE_MEASURE',
-'INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE INVOICE_DATE >= ''2023-01-01''','filter',1,'dbo','INVOICE_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (3,'WAREHOUSE_DIMENSION',1,'DatabaseTask',1,NULL,'HDC','HDCVIP','snowflake',1,'VIPSHARE_KEG1HDC','C_10012505_DGB53269','WAREHOUSE_DIMENSION',
-'INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','WAREHOUSE_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-
---- KEG1O Encompass TASKS
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'Products',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','Products',
-'ProductID','TimeUpdated',NULL,'incremental',1,'dbo','Products','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'AssignedUsers',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','AssignedUsers',
-'AssignedUserID','TimeUpdated',NULL,'incremental',1,'dbo','AssignedUsers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'Chains',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','Chains',
-'ChainID','TimeUpdated',NULL,'incremental',1,'dbo','Chains','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'TradeChannels',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','TradeChannels',
-'TradeChannelID','TimeUpdated',NULL,'incremental',1,'dbo','TradeChannels','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'Suppliers',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','Suppliers',
-'SupplierID','TimeUpdated',NULL,'incremental',1,'dbo','Suppliers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'Brands',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','Brands',
-'BrandID','TimeUpdated',NULL,'incremental',1,'dbo','Brands','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'Packages',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','Packages',
-'PackageID','TimeUpdated',NULL,'incremental',1,'dbo','Packages','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'Customers',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','Customers',
-'CustomerID','TimeUpdated',NULL,'incremental',1,'dbo','Customers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'CustomerTypes',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','CustomerTypes',
-'CustomerTypeID','TimeUpdated',NULL,'incremental',1,'dbo','CustomerTypes','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'Locations',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','Locations',
-'LocationID','TimeUpdated',NULL,'incremental',1,'dbo','Locations','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'Territories',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','Territories',
-'TerritoryID','TimeUpdated',NULL,'incremental',1,'dbo','Territories','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'ProductTypes',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','ProductTypes',
-'ProductTypeID','TimeUpdated',NULL,'incremental',1,'dbo','ProductTypes','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'InventoryDaily',1,'DatabaseTask',0,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','InventoryDaily',
-'InventoryDailyID','TimeUpdated','"Date" >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,'dbo','InventoryDaily','reload','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (4,'InvoiceTransReport',1,'DatabaseTask',1,NULL,'KEG1O','KEG1OEncompass','snowflake',1,'ONEALKEG1DATA','PUBLIC','InvoiceTransReport',
-'InvoiceTransID','TimeUpdated','"LoadSheetDate" >= ''2023-01-01''','filter',1,'dbo','InvoiceTransReport','merge','TimeUpdated');
-
-
---- KEG1CO Encompass TASKS
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'Products',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','Products',
-'ProductID','TimeUpdated',NULL,'incremental',1,'dbo','Products','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'AssignedUsers',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','AssignedUsers',
-'AssignedUserID','TimeUpdated',NULL,'incremental',1,'dbo','AssignedUsers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'Chains',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','Chains',
-'ChainID','TimeUpdated',NULL,'incremental',1,'dbo','Chains','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'TradeChannels',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','TradeChannels',
-'TradeChannelID','TimeUpdated',NULL,'incremental',1,'dbo','TradeChannels','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'Suppliers',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','Suppliers',
-'SupplierID','TimeUpdated',NULL,'incremental',1,'dbo','Suppliers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'Brands',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','Brands',
-'BrandID','TimeUpdated',NULL,'incremental',1,'dbo','Brands','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'Packages',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','Packages',
-'PackageID','TimeUpdated',NULL,'incremental',1,'dbo','Packages','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'Customers',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','Customers',
-'CustomerID','TimeUpdated',NULL,'incremental',1,'dbo','Customers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'CustomerTypes',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','CustomerTypes',
-'CustomerTypeID','TimeUpdated',NULL,'incremental',1,'dbo','CustomerTypes','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'Locations',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','Locations',
-'LocationID','TimeUpdated',NULL,'incremental',1,'dbo','Locations','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'Territories',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','Territories',
-'TerritoryID','TimeUpdated',NULL,'incremental',1,'dbo','Territories','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'ProductTypes',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','ProductTypes',
-'ProductTypeID','TimeUpdated',NULL,'incremental',1,'dbo','ProductTypes','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'InventoryDaily',1,'DatabaseTask',0,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','InventoryDaily',
-'InventoryDailyID','TimeUpdated','"Date" >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,'dbo','InventoryDaily','reload','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (5,'InvoiceTransReport',1,'DatabaseTask',1,NULL,'KEG1CO','KEG1COEncompass','snowflake',1,'RMCDATA','PUBLIC','InvoiceTransReport',
-'InvoiceTransID','TimeUpdated','"LoadSheetDate" >= ''2023-01-01''','filter',1,'dbo','InvoiceTransReport','merge','TimeUpdated');
-
-
---- KEG1RC VIP TASKS
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'WAREHOUSE_PICKING_SHIFT_DIMENSION',0,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_PICKING_SHIFT_DIMENSION',
-'WAREHOUSE_PICKING_SHIFT_CODE','UPDATE_TIMESTAMP','WHERE SHIFT_START_DATE >= ''2023-01-01''','filter',1,'dbo','WAREHOUSE_PICKING_SHIFT_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'ACCOUNT_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','ACCOUNT_DIMENSION',
-'ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','ACCOUNT_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','ITEM_DIMENSION',
-'ITEM_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','ITEM_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'WAREHOUSE_ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_ITEM_DIMENSION',
-'WAREHOUSE_ITEM_CODE,WAREHOUSE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','WAREHOUSE_ITEM_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'INVOICE_REASON_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','INVOICE_REASON_DIMENSION',
-'INVOICE_REASON_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','INVOICE_REASON_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'SUPPLIER_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','SUPPLIER_DIMENSION',
-'SUPPLIER_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SUPPLIER_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'SALES_PERSON_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','SALES_PERSON_DIMENSION',
-'SALES_PERSON_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_PERSON_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'SALES_SUPERVISOR_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','SALES_SUPERVISOR_DIMENSION',
-'SALES_SUPERVISOR_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_SUPERVISOR_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'SALES_POINTER_ACCOUNT_RELATION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','SALES_POINTER_ACCOUNT_RELATION',
-'SALES_POINTER_CODE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_POINTER_ACCOUNT_RELATION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'PICKING_EMPLOYEE_BREAK_MEASURE',0,'DatabaseTask',0,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','PICKING_EMPLOYEE_BREAK_MEASURE',
-'WAREHOUSE_CODE,PICKING_EMPLOYEE_CODE,EMPLOYEE_BREAK_DATE,EMPLOYEE_PICKING_BREAK_TYPE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP','WHERE EMPLOYEE_BREAK_DATE >= ''2023-01-01''','filter',1,'dbo','PICKING_EMPLOYEE_BREAK_MEASURE','reload','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'PALLET_PICKING_ACTIVITY_MEASURE',0,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','PALLET_PICKING_ACTIVITY_MEASURE',
-'PICKER_EMPLOYEE_CODE,PALLET_PICKING_DATE,WAREHOUSE_PICKING_SHIFT_CODE,PALLET_LICENSE_PLATE_CODE,TRUCK_LOAD_CODE','UPDATE_TIMESTAMP','WHERE PALLET_PICKING_DATE >= ''2023-01-01''','filter',1,'dbo','PALLET_PICKING_ACTIVITY_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'ORDER_MEASURE',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','ORDER_MEASURE',
-'ORDER_CODE,ORDER_LINE_NUMBER,ORDER_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE ORDER_DATE >= ''2023-01-01''','filter',1,'dbo','ORDER_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'INVENTORY_ON_HAND_MEASURE',1,'DatabaseTask',0,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','INVENTORY_ON_HAND_MEASURE',
-'INVN_AS_OF_DATE,WAREHOUSE_CODE,ITEM_CODE,CODE_DATE,WAREHOUSE_SLOT_CODE,INVENTORY_TRANS_TYPE_CODE,INVN_VIP_UNIT_ID,INVN_LINE_NUMBER','UPDATE_TIMESTAMP','INVN_AS_OF_DATE >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,'dbo','INVENTORY_ON_HAND_MEASURE','reload','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'INVOICE_MEASURE',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','INVOICE_MEASURE',
-'INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE INVOICE_DATE >= ''2023-01-01''','filter',1,'dbo','INVOICE_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (6,'WAREHOUSE_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1RC','KEG1RCVIP','snowflake',1,'VIPMIRROR_KEG1RC_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_DIMENSION',
-'INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','WAREHOUSE_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-
---- KEG1MO VIP TASKS
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'WAREHOUSE_PICKING_SHIFT_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_PICKING_SHIFT_DIMENSION',
-'WAREHOUSE_PICKING_SHIFT_CODE','UPDATE_TIMESTAMP','WHERE SHIFT_START_DATE >= ''2023-01-01''','filter',1,'dbo','WAREHOUSE_PICKING_SHIFT_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'ACCOUNT_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','ACCOUNT_DIMENSION',
-'ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','ACCOUNT_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','ITEM_DIMENSION',
-'ITEM_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','ITEM_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'WAREHOUSE_ITEM_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_ITEM_DIMENSION',
-'WAREHOUSE_ITEM_CODE,WAREHOUSE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','WAREHOUSE_ITEM_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'INVOICE_REASON_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','INVOICE_REASON_DIMENSION',
-'INVOICE_REASON_CODE,SOURCE_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','INVOICE_REASON_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'SUPPLIER_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','SUPPLIER_DIMENSION',
-'SUPPLIER_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SUPPLIER_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'SALES_PERSON_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','SALES_PERSON_DIMENSION',
-'SALES_PERSON_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_PERSON_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'SALES_SUPERVISOR_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','SALES_SUPERVISOR_DIMENSION',
-'SALES_SUPERVISOR_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_SUPERVISOR_DIMENSION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'SALES_POINTER_ACCOUNT_RELATION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','SALES_POINTER_ACCOUNT_RELATION',
-'SALES_POINTER_CODE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','SALES_POINTER_ACCOUNT_RELATION','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'PICKING_EMPLOYEE_BREAK_MEASURE',1,'DatabaseTask',0,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','PICKING_EMPLOYEE_BREAK_MEASURE',
-'WAREHOUSE_CODE,PICKING_EMPLOYEE_CODE,EMPLOYEE_BREAK_DATE,EMPLOYEE_PICKING_BREAK_TYPE_CODE,SOURCE_CODE','UPDATE_TIMESTAMP','WHERE EMPLOYEE_BREAK_DATE >= ''2023-01-01''','filter',1,'dbo','PICKING_EMPLOYEE_BREAK_MEASURE','reload','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'PALLET_PICKING_ACTIVITY_MEASURE',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','PALLET_PICKING_ACTIVITY_MEASURE',
-'PICKER_EMPLOYEE_CODE,PALLET_PICKING_DATE,WAREHOUSE_PICKING_SHIFT_CODE,PALLET_LICENSE_PLATE_CODE,TRUCK_LOAD_CODE','UPDATE_TIMESTAMP','WHERE PALLET_PICKING_DATE >= ''2023-01-01''','filter',1,'dbo','PALLET_PICKING_ACTIVITY_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'ORDER_MEASURE',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','ORDER_MEASURE',
-'ORDER_CODE,ORDER_LINE_NUMBER,ORDER_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE ORDER_DATE >= ''2023-01-01''','filter',1,'dbo','ORDER_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'INVENTORY_ON_HAND_MEASURE',1,'DatabaseTask',0,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','INVENTORY_ON_HAND_MEASURE',
-'INVN_AS_OF_DATE,WAREHOUSE_CODE,ITEM_CODE,CODE_DATE,WAREHOUSE_SLOT_CODE,INVENTORY_TRANS_TYPE_CODE,INVN_VIP_UNIT_ID,INVN_LINE_NUMBER','UPDATE_TIMESTAMP','INVN_AS_OF_DATE >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,'dbo','INVENTORY_ON_HAND_MEASURE','reload','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'INVOICE_MEASURE',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','INVOICE_MEASURE',
-'INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP','WHERE INVOICE_DATE >= ''2023-01-01''','filter',1,'dbo','INVOICE_MEASURE','merge','UPDATE_TIMESTAMP');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (7,'WAREHOUSE_DIMENSION',1,'DatabaseTask',1,NULL,'KEG1MO','KEG1MOVIP','snowflake',1,'VIPMIRROR_KEG1MO_ONLY','FILTERED_VIP_VIEWS','WAREHOUSE_DIMENSION',
-'INVOICE_CODE,INVOICE_LINE_NUMBER,ITEM_CODE,INVOICE_DATE,ACCOUNT_CODE','UPDATE_TIMESTAMP',NULL,'incremental',1,'dbo','WAREHOUSE_DIMENSION','merge','UPDATE_TIMESTAMP');
-
---- KEG1IA Encompass TASKS
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'Products',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','Products',
-'ProductID','TimeUpdated',NULL,'incremental',1,'dbo','Products','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'AssignedUsers',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','AssignedUsers',
-'AssignedUserID','TimeUpdated',NULL,'incremental',1,'dbo','AssignedUsers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'Chains',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','Chains',
-'ChainID','TimeUpdated',NULL,'incremental',1,'dbo','Chains','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'TradeChannels',0,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','TradeChannels',
-'TradeChannelID','TimeUpdated',NULL,'incremental',1,'dbo','TradeChannels','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'Suppliers',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','Suppliers',
-'SupplierID','TimeUpdated',NULL,'incremental',1,'dbo','Suppliers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'Brands',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','Brands',
-'BrandID','TimeUpdated',NULL,'incremental',1,'dbo','Brands','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'Packages',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','Packages',
-'PackageID','TimeUpdated',NULL,'incremental',1,'dbo','Packages','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'Customers',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','Customers',
-'CustomerID','TimeUpdated',NULL,'incremental',1,'dbo','Customers','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'CustomerTypes',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','CustomerTypes',
-'CustomerTypeID','TimeUpdated',NULL,'incremental',1,'dbo','CustomerTypes','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'Locations',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','Locations',
-'LocationID','TimeUpdated',NULL,'incremental',1,'dbo','Locations','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'Territories',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','Territories',
-'TerritoryID','TimeUpdated',NULL,'incremental',1,'dbo','Territories','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'ProductTypes',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','ProductTypes',
-'ProductTypeID','TimeUpdated',NULL,'incremental',1,'dbo','ProductTypes','merge','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'InventoryDaily',1,'DatabaseTask',0,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','InventoryDaily',
-'InventoryDailyID','TimeUpdated','"Date" >= DATEADD(DAY, -90, CURRENT_DATE)','filter',1,'dbo','InventoryDaily','reload','TimeUpdated');
-
-insert into bronze.Task (JobKey,TaskName,IsActiveFlag,TaskType,IsWatermarkEnabledFlag,SourceLocationKey,
-ParentSourceName,SourceName,SourceType,NotebookKey,SourceDatabaseName,SourceSchemaName,SourceTableName,
-PrimaryKeyColumnList,SortByColumnList,SourceWhereClause,SourceExtractionMethod,SinkLocationKey,SinkSchemaName,SinkTableName,SinkLoadMethod,SinkWatermarkColumn)
-VALUES (8,'InvoiceTransReport',1,'DatabaseTask',1,NULL,'KEG1IA','KEG1IAEncompass','snowflake',1,'KEG1IADATA','PUBLIC','InvoiceTransReport',
-'InvoiceTransID','TimeUpdated','"LoadSheetDate" >= ''2023-01-01''','filter',1,'dbo','InvoiceTransReport','merge','TimeUpdated');

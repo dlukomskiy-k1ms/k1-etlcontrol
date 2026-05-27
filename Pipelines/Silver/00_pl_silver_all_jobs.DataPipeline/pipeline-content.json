@@ -9,15 +9,15 @@
             "type": "PipelineReference"
           },
           "parameters": {
-            "SilverJobName": "General Tasks OR OR REPLACE JOB NAME HERE"
+            "SilverJobName": "Silver Layer Tables - D1"
           },
           "waitOnCompletion": true
         },
         "policy": {
           "secureInput": false
         },
-        "name": "General Tasks",
-        "description": "EX: date & entrauser",
+        "name": "Silver Layer Tables - D1",
+        "description": "Silver Layer Tables - D1",
         "dependsOn": []
       }
     ]

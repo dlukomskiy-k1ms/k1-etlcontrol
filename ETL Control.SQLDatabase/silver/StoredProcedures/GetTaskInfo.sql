@@ -21,9 +21,9 @@ DECLARE @IsWatermarkEnabledFlag BIT
 DECLARE @HighWatermarkValue DATETIME2(6)
 
 -- validate TaskAuditKey and throw error if invalid as rest of proc will not work properly
-IF NOT EXISTS (SELECT TOP 1 TaskKey FROM gold.Task WHERE TaskKey = @TaskKey)
+IF NOT EXISTS (SELECT TOP 1 TaskKey FROM silver.Task WHERE TaskKey = @TaskKey)
 BEGIN
-	SET @errorMessage =  'Error: Lookup to gold.Task failed for TaskKey: "' + ISNULL(CONVERT(VARCHAR(20), @TaskKey), 'NULL') + '" Task Not Found in Task Table.';
+	SET @errorMessage =  'Error: Lookup to silver.Task failed for TaskKey: "' + ISNULL(CONVERT(VARCHAR(20), @TaskKey), 'NULL') + '" Task Not Found in Task Table.';
 	THROW 50000, @errorMessage, 1;
 END
 
@@ -41,7 +41,7 @@ SELECT TOP 1
     ,@SinkWorkspaceID       = t.SinkWorkspaceID
     ,@IsWatermarkEnabledFlag = t.IsWatermarkEnabledFlag
     ,@HighWatermarkValue    = t.HighWatermarkValue
-FROM gold.Task t
+FROM silver.Task t
 WHERE t.TaskKey = @TaskKey
 
 SELECT

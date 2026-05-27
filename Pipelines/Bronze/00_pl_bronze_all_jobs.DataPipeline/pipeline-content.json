@@ -5,7 +5,7 @@
         "type": "ExecutePipeline",
         "typeProperties": {
           "pipeline": {
-            "referenceName": "d53c627d-9c1d-4bdb-b4b9-519c03f20c81",
+            "referenceName": "519f3c20-f39b-90ec-4d7d-c06712685867",
             "type": "PipelineReference"
           },
           "parameters": {
@@ -17,15 +17,13 @@
           "secureInput": false
         },
         "name": "Ingest SBG VIP",
-        "state": "Inactive",
-        "onInactiveMarkAs": "Succeeded",
         "dependsOn": []
       },
       {
         "type": "ExecutePipeline",
         "typeProperties": {
           "pipeline": {
-            "referenceName": "d53c627d-9c1d-4bdb-b4b9-519c03f20c81",
+            "referenceName": "519f3c20-f39b-90ec-4d7d-c06712685867",
             "type": "PipelineReference"
           },
           "parameters": {
@@ -37,8 +35,6 @@
           "secureInput": false
         },
         "name": "Ingest CAFFEY Encompass",
-        "state": "Inactive",
-        "onInactiveMarkAs": "Succeeded",
         "dependsOn": []
       },
       {

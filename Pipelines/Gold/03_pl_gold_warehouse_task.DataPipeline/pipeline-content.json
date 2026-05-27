@@ -209,7 +209,7 @@
           "secureInput": false
         },
         "typeProperties": {
-          "storedProcedureName": "[silver].[TaskAuditExecutionUpdate]",
+          "storedProcedureName": "[gold].[TaskAuditExecutionUpdate]",
           "storedProcedureParameters": {
             "TaskAuditKey": {
               "value": {
@@ -219,11 +219,17 @@
               "type": "Int64"
             },
             "RowsRead": {
-              "value": null,
+              "value": {
+                "value": "@activity('Run And Return StoredProc').output.firstRow.TotalRowsAffected",
+                "type": "Expression"
+              },
               "type": "Int64"
             },
             "RowsCopied": {
-              "value": null,
+              "value": {
+                "value": "@activity('Run And Return StoredProc').output.firstRow.TotalRowsAffected",
+                "type": "Expression"
+              },
               "type": "Int64"
             },
             "RowsSkipped": {
@@ -231,24 +237,15 @@
               "type": "Int64"
             },
             "RowsInserted": {
-              "value": {
-                "value": "@activity('Run And Return StoredProc').output.firstRow.RowsInserted",
-                "type": "Expression"
-              },
+              "value": null,
               "type": "Int64"
             },
             "RowsUpdated": {
-              "value": {
-                "value": "@activity('Run And Return StoredProc').output.firstRow.RowsUpdated",
-                "type": "Expression"
-              },
+              "value": null,
               "type": "Int64"
             },
             "RowsDeleted": {
-              "value": {
-                "value": "@activity('Run And Return StoredProc').output.firstRow.RowsDeleted",
-                "type": "Expression"
-              },
+              "value": null,
               "type": "Int64"
             }
           }

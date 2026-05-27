@@ -98,7 +98,7 @@
                               "type": "Expression"
                             },
                             "TaskAuditKey": {
-                              "value": "@variables('TaskAuditKey')",
+                              "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
                               "type": "Expression"
                             }
                           },
@@ -183,7 +183,7 @@
                               "type": "Expression"
                             },
                             "TaskAuditKey": {
-                              "value": "@variables('TaskAuditKey')",
+                              "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
                               "type": "Expression"
                             }
                           },
@@ -346,24 +346,7 @@
                     "dependsOn": []
                   }
                 ],
-                "ifFalseActivities": [
-                  {
-                    "type": "SetVariable",
-                    "typeProperties": {
-                      "variableName": "TaskAuditKey",
-                      "value": {
-                        "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
-                        "type": "Expression"
-                      }
-                    },
-                    "policy": {
-                      "secureInput": false,
-                      "secureOutput": false
-                    },
-                    "name": "Set TaskAuditKey",
-                    "dependsOn": []
-                  }
-                ]
+                "ifFalseActivities": []
               },
               "name": "Validate TaskAuditKey",
               "dependsOn": [
@@ -382,7 +365,7 @@
                 "storedProcedureParameters": {
                   "TaskAuditKey": {
                     "value": {
-                      "value": "@variables('TaskAuditKey')",
+                      "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
                       "type": "Expression"
                     },
                     "type": "Int64"
@@ -431,7 +414,7 @@
                 "storedProcedureParameters": {
                   "TaskAuditKey": {
                     "value": {
-                      "value": "@variables('TaskAuditKey')",
+                      "value": "@string(activity('Task Audit Start').output.firstRow.TaskAuditKey)",
                       "type": "Expression"
                     },
                     "type": "Int64"
@@ -525,9 +508,6 @@
       }
     },
     "variables": {
-      "TaskAuditKey": {
-        "type": "String"
-      },
       "ChildPipelineTaskDebugMessage": {
         "type": "String"
       }

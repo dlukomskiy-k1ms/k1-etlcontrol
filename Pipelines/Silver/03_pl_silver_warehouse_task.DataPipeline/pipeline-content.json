@@ -124,6 +124,81 @@
         }
       },
       {
+        "name": "Task Audit Update Execution Metrics",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          {
+            "activity": "Run And Return StoredProc",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[silver].[TaskAuditExecutionUpdate]",
+          "storedProcedureParameters": {
+            "TaskAuditKey": {
+              "value": {
+                "value": "@pipeline().parameters.TaskAuditKey",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsRead": {
+              "value": {
+                "value": "@activity('Run And Return StoredProc').output.firstRow.TotalRowsAffected",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsCopied": {
+              "value": {
+                "value": "@activity('Run And Return StoredProc').output.firstRow.TotalRowsAffected",
+                "type": "Expression"
+              },
+              "type": "Int64"
+            },
+            "RowsSkipped": {
+              "value": null,
+              "type": "Int64"
+            },
+            "RowsInserted": {
+              "value": null,
+              "type": "Int64"
+            },
+            "RowsUpdated": {
+              "value": null,
+              "type": "Int64"
+            },
+            "RowsDeleted": {
+              "value": null,
+              "type": "Int64"
+            }
+          }
+        },
+        "connectionSettings": {
+          "name": "e813c9e1_e664_4615_af45_491ecd160069",
+          "properties": {
+            "annotations": [],
+            "type": "FabricSqlDatabase",
+            "typeProperties": {
+              "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
+              "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id"
+            },
+            "externalReferences": {
+              "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
+            }
+          }
+        }
+      },
+      {
         "name": "Run And Return StoredProc",
         "type": "Lookup",
         "dependsOn": [
@@ -162,27 +237,6 @@
                   "value": "@activity('Get Warehouse Task Info').output.firstRow.HighWatermarkValue",
                   "type": "Expression"
                 }
-              },
-              "etlLoadDateTime": {
-                "type": "String",
-                "value": {
-                  "value": "@pipeline().parameters.etlLoadDateTime",
-                  "type": "Expression"
-                }
-              },
-              "JobAuditKey": {
-                "type": "Int64",
-                "value": {
-                  "value": "@pipeline().parameters.JobAuditKey",
-                  "type": "Expression"
-                }
-              },
-              "TaskAuditKey": {
-                "type": "Int64",
-                "value": {
-                  "value": "@pipeline().parameters.TaskAuditKey",
-                  "type": "Expression"
-                }
               }
             },
             "queryTimeout": "02:00:00",
@@ -208,84 +262,6 @@
             "type": "DataWarehouseTable",
             "schema": [],
             "typeProperties": {}
-          }
-        }
-      },
-      {
-        "name": "Task Audit Update Execution Metrics",
-        "type": "SqlServerStoredProcedure",
-        "dependsOn": [
-          {
-            "activity": "Run And Return StoredProc",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "typeProperties": {
-          "storedProcedureName": "[silver].[TaskAuditExecutionUpdate]",
-          "storedProcedureParameters": {
-            "TaskAuditKey": {
-              "value": {
-                "value": "@pipeline().parameters.TaskAuditKey",
-                "type": "Expression"
-              },
-              "type": "Int64"
-            },
-            "RowsRead": {
-              "value": null,
-              "type": "Int64"
-            },
-            "RowsCopied": {
-              "value": null,
-              "type": "Int64"
-            },
-            "RowsSkipped": {
-              "value": null,
-              "type": "Int64"
-            },
-            "RowsInserted": {
-              "value": {
-                "value": "@activity('Run And Return StoredProc').output.firstRow.RowsInserted",
-                "type": "Expression"
-              },
-              "type": "Int64"
-            },
-            "RowsUpdated": {
-              "value": {
-                "value": "@activity('Run And Return StoredProc').output.firstRow.RowsUpdated",
-                "type": "Expression"
-              },
-              "type": "Int64"
-            },
-            "RowsDeleted": {
-              "value": {
-                "value": "@activity('Run And Return StoredProc').output.firstRow.RowsDeleted",
-                "type": "Expression"
-              },
-              "type": "Int64"
-            }
-          }
-        },
-        "connectionSettings": {
-          "name": "e813c9e1_e664_4615_af45_491ecd160069",
-          "properties": {
-            "annotations": [],
-            "type": "FabricSqlDatabase",
-            "typeProperties": {
-              "workspaceId": "@pipeline().libraryVariables.vl_etlControl_etlControl_ws_id",
-              "artifactId": "@pipeline().libraryVariables.vl_etlControl_etlControl_db_id"
-            },
-            "externalReferences": {
-              "connection": "@pipeline().libraryVariables.vl_etlControl_etlControl_fabricsql_item_connection_id"
-            }
           }
         }
       }

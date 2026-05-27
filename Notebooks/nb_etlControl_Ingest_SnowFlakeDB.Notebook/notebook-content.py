@@ -21,19 +21,19 @@
 # MAGIC     "defaultLakehouse": {  
 # MAGIC         "name": { 
 # MAGIC             "parameterName": "BronzeLakehouseName", 
-# MAGIC             "defaultValue": "lh_SBG"
+# MAGIC             "defaultValue": ""
 # MAGIC         },
 # MAGIC         "id": { 
 # MAGIC             "parameterName": "BronzeLakehouseId", 
-# MAGIC             "defaultValue": "c5e9d794-da5f-487f-9a50-55da74cbc67a"
+# MAGIC             "defaultValue": ""
 # MAGIC         },
 # MAGIC         "workspaceId": { 
 # MAGIC             "parameterName": "BronzeWorkspaceId", 
-# MAGIC             "defaultValue": "35511d3e-0ac8-43a6-99e7-83c6071ddf70"
+# MAGIC             "defaultValue": ""
 # MAGIC         },
 # MAGIC         "workspaceName": { 
 # MAGIC             "parameterName": "BronzeWorkspaceName", 
-# MAGIC             "defaultValue": "K1MS - [1 Dev] Data Hub"
+# MAGIC             "defaultValue": ""
 # MAGIC         },
 # MAGIC     }
 # MAGIC }
@@ -44,98 +44,34 @@
 # META {
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark",
-# META   "frozen": true,
-# META   "editable": false
-# META }
-
-# CELL ********************
-
-# MAGIC %%configure -f
-# MAGIC {
-# MAGIC     "defaultLakehouse": {  
-# MAGIC         "name": { 
-# MAGIC             "parameterName": "BronzeLakehouseName", 
-# MAGIC             "defaultValue": "lh_TestIngestion"
-# MAGIC         },
-# MAGIC         "id": { 
-# MAGIC             "parameterName": "BronzeLakehouseId", 
-# MAGIC             "defaultValue": "776c8665-f2b2-4049-8150-af4090941340"
-# MAGIC         },
-# MAGIC         "workspaceId": { 
-# MAGIC             "parameterName": "BronzeWorkspaceId", 
-# MAGIC             "defaultValue": "58d5660e-b470-43bb-9b03-52ccccb99ce6"
-# MAGIC         },
-# MAGIC         "workspaceName": { 
-# MAGIC             "parameterName": "BronzeWorkspaceName", 
-# MAGIC             "defaultValue": "K1MS - [1 Dev] 01 ETL Control"
-# MAGIC         },
-# MAGIC     }
-# MAGIC }
-# MAGIC      
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
+# META   "frozen": false,
+# META   "editable": true
 # META }
 
 # PARAMETERS CELL ********************
 
+# Populate variables if running this notebook manually
 JobAuditKey = 0
 TaskAuditKey = 0
-etlLoadDateTime = "2026-05-19T12:43:11Z"
-TaskKey = 1
-SourceName = "SBGVIP"
+etlLoadDateTime = None
+TaskKey = 60
+SourceName = "KEG1COEncompass"
 SourceType = "snowflake"
 IsWatermarkEnabledFlag = True
-PrimaryKeyColumnList = "WAREHOUSE_PICKING_SHIFT_CODE"
-SortByColumnList = "UPDATE_TIMESTAMP"
-SourceDatabaseName = "VIPSHARE_KEG1SBG"
-SourceSchemaName = "C_10007233_DGB53269"
-SourceTableName = "WAREHOUSE_PICKING_SHIFT_DIMENSION"
+PrimaryKeyColumnList = "\"ChainID\""
+SortByColumnList = "\"TimeUpdated\""
+SourceDatabaseName = "RMCDATA"
+SourceSchemaName = "PUBLIC"
+SourceTableName = "\"Chains\""
 BronzeWorkspaceName = "K1MS - [1 Dev] 01 ETL Control"
 BronzeWorkspaceId = "58d5660e-b470-43bb-9b03-52ccccb99ce6"
 BronzeLakehouseName = "lh_TestIngestion"
 BronzeLakehouseId = "776c8665-f2b2-4049-8150-af4090941340"
 BronzeSchemaName = "dbo"
-BronzeTableName = "WAREHOUSE_PICKING_SHIFT_DIMENSION"
+BronzeTableName = "Chains"
 BronzeLoadMethod = "merge"
-WatermarkColumn = "UPDATE_TIMESTAMP"
-SourceQuery = "SELECT * FROM VIPSHARE_KEG1SBG.C_10007233_DGB53269.WAREHOUSE_PICKING_SHIFT_DIMENSION WHERE SHIFT_START_DATE >= '2023-01-01'"
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-# This cell is generated from runtime parameters. Learn more: https://go.microsoft.com/fwlink/?linkid=2161015
-JobAuditKey = 32
-TaskAuditKey = 199
-etlLoadDateTime = "20260521T022047Z"
-TaskKey = 87
-SourceName = "KEG1MOVIP"
-SourceType = "snowflake"
-IsWatermarkEnabledFlag = True
-PrimaryKeyColumnList = "WAREHOUSE_PICKING_SHIFT_CODE"
-SortByColumnList = "UPDATE_TIMESTAMP"
-SourceDatabaseName = "VIPMIRROR_KEG1MO_ONLY"
-SourceSchemaName = "FILTERED_VIP_VIEWS"
-SourceTableName = "WAREHOUSE_PICKING_SHIFT_DIMENSION"
-BronzeWorkspaceName = "K1MS - [1 Dev] 01 ETL Control"
-BronzeWorkspaceId = "58d5660e-b470-43bb-9b03-52ccccb99ce6"
-BronzeLakehouseName = "lh_TestIngestion"
-BronzeLakehouseId = "776c8665-f2b2-4049-8150-af4090941340"
-BronzeSchemaName = "KEG1MOVIP"
-BronzeTableName = "WAREHOUSE_PICKING_SHIFT_DIMENSION"
-BronzeLoadMethod = "merge"
-WatermarkColumn = "UPDATE_TIMESTAMP"
-SourceQuery = "SELECT *  FROM VIPMIRROR_KEG1MO_ONLY.FILTERED_VIP_VIEWS.WAREHOUSE_PICKING_SHIFT_DIMENSION WHERE SHIFT_START_DATE >= '2023-01-01'"
-
+WatermarkColumn = "\"TimeUpdated\""
+SourceQuery = ""
 
 # METADATA ********************
 
@@ -341,6 +277,27 @@ else:
 
 # CELL ********************
 
+if bronze_load_method == "merge":
+    from pyspark.sql import functions as F
+    from pyspark.sql.window import Window
+
+    # Deduplicate before cleaning column names
+    df = df.withColumn(
+        "ROWNUM",
+        F.row_number().over(
+            Window.partitionBy(*pk_list).orderBy(*[F.col(c).desc() for c in sbc_list])
+        )
+    ).filter(F.col("ROWNUM") == 1)#.drop("ROWNUM")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
 # Clean column names & Add metadata columns (TaskKey, JobAuditKey, TaskAuditKey, etlLoadDateTime)
 
 df = clean_column_names(df)
@@ -388,19 +345,11 @@ if spark.catalog.tableExists(table_name):
     elif bronze_load_method == "merge":
             df.createOrReplaceTempView(stage_table)
             spark.conf.set("spark.databricks.delta.schema.autoMerge.enabled", "true")
+            pk_list = [k.replace('"', '') for k in pk_list]
             join_list = " and ".join([f'stage.{f} = bronze.{f}' for f in pk_list])
-            order_list = ", ".join(sbc_list)
             merge_query = f"""
-            WITH stg AS (
-                SELECT *
-                    , ROW_NUMBER() OVER (
-                        PARTITION BY {PrimaryKeyColumnList} 
-                        ORDER BY {order_list} DESC
-                    ) AS ROWNUM
-            FROM {stage_table}
-            )
             MERGE INTO {table_name} AS bronze
-            USING (SELECT * FROM stg WHERE ROWNUM = 1) AS stage
+            USING (SELECT * FROM {stage_table}) AS stage
             ON {join_list}
             WHEN MATCHED THEN UPDATE SET *
             WHEN NOT MATCHED THEN INSERT *
@@ -415,7 +364,10 @@ else:
 
     if BronzeSchemaName:
         print(f"Checking for existing Schema: {BronzeSchemaName}")
-        spark.sql(f"CREATE SCHEMA IF NOT EXISTS {BronzeSchemaName}")
+        try:
+            spark.sql(f"CREATE SCHEMA IF NOT EXISTS {BronzeSchemaName}")
+        except Exception as e:
+            print(f"Schema creation skipped (not supported in this lakehouse): {e}")
 
     df.write.format("delta").mode("overwrite").saveAsTable(table_name)
     print("Table saved!")
