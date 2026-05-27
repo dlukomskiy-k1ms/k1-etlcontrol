@@ -237,6 +237,34 @@
                   "value": "@activity('Get Warehouse Task Info').output.firstRow.HighWatermarkValue",
                   "type": "Expression"
                 }
+              },
+              "TaskKey": {
+                "type": "Int64",
+                "value": {
+                  "value": "@pipeline().parameters.TaskKey",
+                  "type": "Expression"
+                }
+              },
+              "JobAuditKey": {
+                "type": "Int64",
+                "value": {
+                  "value": "@pipeline().parameters.JobAuditKey",
+                  "type": "Expression"
+                }
+              },
+              "TaskAuditKey": {
+                "type": "Int64",
+                "value": {
+                  "value": "@pipeline().parameters.TaskAuditKey",
+                  "type": "Expression"
+                }
+              },
+              "etlLoadDateTime": {
+                "type": "String",
+                "value": {
+                  "value": "@pipeline().parameters.etlLoadDateTime",
+                  "type": "Expression"
+                }
               }
             },
             "queryTimeout": "02:00:00",
